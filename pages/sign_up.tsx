@@ -218,7 +218,7 @@ const SignUp = () => {
                 </Box>
 
                 <Box sx={{ mt: 3 }}>
-                  <Divider>第三方注册</Divider>
+                  <Divider>第三方账号注册</Divider>
                   <Box sx={{ display: 'flex', gap: 2, mt: 1, justifyContent: 'center' }}>
                     <IconButton disabled>
                       <GitHubIcon />
