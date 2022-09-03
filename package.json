@@ -18,7 +18,8 @@
     "@mui/material": "latest",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-hook-form": "^7.34.2"
   },
   "devDependencies": {
     "@types/node": "latest",
