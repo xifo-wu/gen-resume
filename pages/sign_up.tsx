@@ -7,6 +7,8 @@ import {
   Typography,
   Button,
   Divider,
+  AppBar,
+  Toolbar,
 } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -37,6 +39,31 @@ const SignUp = () => {
 
   return (
     <>
+      <AppBar elevation={0} position="fixed" color="transparent">
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Typography
+              className="title"
+              variant="h6"
+              noWrap
+              component="a"
+              href="/"
+              sx={{
+                mr: 2,
+                // display: { xs: 'none', md: 'flex' },
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                textDecoration: 'none',
+                flexGrow: 1,
+                color: '#fff',
+              }}
+            >
+              Gen-Resume
+            </Typography>
+          </Toolbar>
+        </Container>
+      </AppBar>
       <FullBackgroundArea
         sx={{ zIndex: -1 }}
         src="https://images.unsplash.com/photo-1648315156503-5335899e3470?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
@@ -55,7 +82,7 @@ const SignUp = () => {
             minHeight: '100vh',
           }}
         >
-          <Box sx={{ flex: 1, color: '#fff', '@media(max-width: 800px)': { display: 'none' }, }}>
+          <Box sx={{ flex: 1, color: '#fff', '@media(max-width: 800px)': { display: 'none' } }}>
             {/* <Typography
               variant="h4"
               sx={{
@@ -151,10 +178,18 @@ const SignUp = () => {
               >
                 注册
               </Typography>
-              <Typography variant="subtitle2"
-              sx={{
-                mt: 2,
-              }}>已经有账号了？那就去<Link href="/login" sx={{ textDecoration: 'none' }}>&nbsp;登录&nbsp;</Link>吧！</Typography>
+              <Typography
+                variant="subtitle2"
+                sx={{
+                  mt: 2,
+                }}
+              >
+                已经有账号了？那就去
+                <Link href="/login" sx={{ textDecoration: 'none' }}>
+                  &nbsp;登录&nbsp;
+                </Link>
+                吧！
+              </Typography>
 
               <Box
                 sx={{

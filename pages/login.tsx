@@ -1,4 +1,6 @@
 import {
+  AppBar,
+  Toolbar,
   Box,
   IconButton,
   Container,
@@ -37,6 +39,31 @@ const Login = () => {
 
   return (
     <>
+      <AppBar elevation={0} position="fixed" color="transparent">
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Typography
+              className="title"
+              variant="h6"
+              noWrap
+              component="a"
+              href="/"
+              sx={{
+                mr: 2,
+                // display: { xs: 'none', md: 'flex' },
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                textDecoration: 'none',
+                flexGrow: 1,
+                color: '#fff',
+              }}
+            >
+              Gen-Resume
+            </Typography>
+          </Toolbar>
+        </Container>
+      </AppBar>
       <FullBackgroundArea
         sx={{ zIndex: -1 }}
         src="https://images.unsplash.com/photo-1648315156503-5335899e3470?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
@@ -105,10 +132,18 @@ const Login = () => {
               >
                 登录
               </Typography>
-              <Typography variant="subtitle2"
-              sx={{
-                mt: 2,
-              }}>还没有账号吗？那就<Link href="/sign_up" sx={{ textDecoration: 'none' }}>&nbsp;创建一个新账号&nbsp;</Link>吧！</Typography>
+              <Typography
+                variant="subtitle2"
+                sx={{
+                  mt: 2,
+                }}
+              >
+                还没有账号吗？那就
+                <Link href="/sign_up" sx={{ textDecoration: 'none' }}>
+                  &nbsp;创建一个新账号&nbsp;
+                </Link>
+                吧！
+              </Typography>
 
               <Box
                 sx={{
@@ -187,8 +222,9 @@ const Login = () => {
             </Paper>
           </Box>
 
-          <Box sx={{ flex: 1, color: '#fff', '@media(max-width: 800px)': { display: 'none' }, }}>
-          </Box>
+          <Box
+            sx={{ flex: 1, color: '#fff', '@media(max-width: 800px)': { display: 'none' } }}
+          ></Box>
         </Box>
       </Container>
     </>
