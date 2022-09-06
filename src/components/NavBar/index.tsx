@@ -15,7 +15,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useScrollTrigger } from '@mui/material';
 import router from 'next/router';
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = ['控制台'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 interface Props {
@@ -156,6 +156,13 @@ const ResponsiveNavBar = (props: any) => {
               Gen-Resume
             </Typography>
             <Box sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}>
+              <Button
+                className="menu-item"
+                onClick={() => router.push('/dashboard')}
+                sx={{ my: 2, display: 'block' }}
+              >
+                控制台
+              </Button>
               {/* {pages.map((page) => (
                 <Button
                   className="menu-item"
@@ -172,7 +179,7 @@ const ResponsiveNavBar = (props: any) => {
               <Tooltip title="前往登录">
                 <AccountCircleIcon
                   className="not-login-avatar"
-                  sx={{ cursor: 'pointer' }}
+                  sx={{ display: 'block', cursor: 'pointer' }}
                   onClick={() => router.push('/login')}
                 />
               </Tooltip>
