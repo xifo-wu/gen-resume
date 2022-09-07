@@ -17,6 +17,7 @@ function a11yProps(index: number) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
+
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -139,7 +140,6 @@ const DashBoard: NextPageWithLayout = () => {
             </Grid>
 
             <Grid item md={6} lg={4} xs={12} sx={{ margin: '0 0 0 auto' }}>
-              <AppBar position="static" elevation={0} color="transparent" sx={{ width: '100%' }}>
                 <Tabs
                   value={value}
                   onChange={handleChange}
@@ -150,22 +150,31 @@ const DashBoard: NextPageWithLayout = () => {
 
                     '& .MuiTabs-indicator': {
                       zIndex: -1,
-                      // position: 'absolute',
                       bottom: '0px',
                       width: '100%',
                       height: '100%',
                       borderRadius: '0.5rem',
                       backgroundColor: 'rgb(255, 255, 255)',
-                      boxShadow: 'rgb(221, 221, 221) 0rem 0.0625rem 0.3125rem 0.0625rem',
                       transition: 'all 500ms ease 0s',
                     },
                   }}
                 >
                   <Tab disableRipple label="简历" {...a11yProps(0)} sx={{ flex: '1 1 auto' }} />
-                  <Tab disableRipple disabled label="收藏" {...a11yProps(1)} sx={{ flex: '1 1 auto' }} />
-                  <Tab disableRipple disabled label="设置" {...a11yProps(2)} sx={{ flex: '1 1 auto' }} />
+                  <Tab
+                    disableRipple
+                    disabled
+                    label="收藏"
+                    {...a11yProps(1)}
+                    sx={{ flex: '1 1 auto' }}
+                  />
+                  <Tab
+                    disableRipple
+                    disabled
+                    label="设置"
+                    {...a11yProps(2)}
+                    sx={{ flex: '1 1 auto' }}
+                  />
                 </Tabs>
-              </AppBar>
             </Grid>
           </Grid>
         </Card>
