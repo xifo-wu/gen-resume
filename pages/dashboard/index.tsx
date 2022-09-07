@@ -3,7 +3,7 @@ import { AppBar, Avatar, Box, Card, Grid, Tab, Tabs, Typography } from '@mui/mat
 import { useMediaQuery, useTheme } from '@mui/material';
 import { NextPageWithLayout } from '../_app';
 import DashboardLayout from '@/layouts/dashboardLayout';
-import NewResumeButton from '@/components/DashBoardPage/NewResumeButton';
+import NewResumeButton from '@/pageComponents/DashBoardPage/NewResumeButton';
 
 interface TabPanelProps {
   children?: React.ReactNode;
