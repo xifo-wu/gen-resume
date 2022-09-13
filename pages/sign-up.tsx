@@ -1,3 +1,4 @@
+import { ReactElement, useMemo } from 'react';
 import {
   Box,
   IconButton,
@@ -7,26 +8,33 @@ import {
   Typography,
   Button,
   Divider,
-  AppBar,
-  Toolbar,
+  Grid,
 } from '@mui/material';
+import router from 'next/router';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
 import { useForm, Controller } from 'react-hook-form';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';
+import SimpleAppBarLayout from '@/layouts/SimpleAppBarLayout';
 import FullBackgroundArea from '@/components/FullBackgroundArea';
 import Link from '@/Link';
+import api from '@/api';
+import styles from '@/styles/signUpPageStyles';
 
 interface FormData {
   email: string;
   password: string;
 }
 
+const backgroundUrl =
+  'https://images.unsplash.com/photo-1648315156503-5335899e3470?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80';
+
 const SignUp = () => {
   const {
     control,
-    register,
+    reset,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -35,155 +43,47 @@ const SignUp = () => {
     },
   });
 
-  const onSubmit = (data: FormData) => console.log(data);
+  const toastConfig = useMemo(
+    () => ({
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    }),
+    [],
+  );
+
+  const onSubmit = async (payload: FormData) => {
+    const { data } = await api<any>({
+      method: 'POST',
+      url: '/api/v1/user/sign-up',
+      data: payload,
+    });
+
+    if (!data.success) {
+      toast.error(data.message, toastConfig);
+      return;
+    }
+
+    toast.success(data.message, toastConfig);
+    reset();
+  };
 
   return (
     <>
-      <AppBar elevation={0} position="fixed" color="transparent">
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <Typography
-              className="title"
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                // display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                textDecoration: 'none',
-                flexGrow: 1,
-                color: '#fff',
-              }}
-            >
-              Gen-Resume
-            </Typography>
-          </Toolbar>
-        </Container>
-      </AppBar>
-      <FullBackgroundArea
-        sx={{ zIndex: -1 }}
-        src="https://images.unsplash.com/photo-1648315156503-5335899e3470?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-      />
+      <FullBackgroundArea src={backgroundUrl} sx={{ zIndex: -1, position: 'fixed' }} />
       <Container>
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 5,
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            margin: 'auto',
-            textAlign: 'center',
-            height: '100%',
-            minHeight: '100vh',
-          }}
-        >
-          <Box sx={{ flex: 1, color: '#fff', '@media(max-width: 800px)': { display: 'none' } }}>
-            {/* <Typography
-              variant="h4"
-              sx={{
-                color: '#fff',
-                letterSpacing: 3,
-                fontFamily: 'monospace',
-                mb: 3,
-                fontWeight: '700',
-                lineHeight: '1.3333333333333333',
-                fontSize: '2rem',
-                '@media (min-width: 600px)': {
-                  fontSize: '2.5rem',
-                },
-                '@media (min-width: 900px)': {
-                  fontSize: '2.75rem',
-                },
-              }}
-            >
-              Gen-Resume
-            </Typography>
-            <Typography variant="subtitle2">Hey! 你是新来的吗?</Typography>
-            <Typography
-              variant="body2"
-              sx={{
-                mt: 5,
-                fontWeight: 700,
-                lineHeight: 2,
-                letterSpacing: 1.5,
-                fontSize: '1.125rem',
-                '@media (min-width: 600px)': {
-                  fontSize: '1.5rem',
-                },
-                '@media (min-width: 900px)': {
-                  fontSize: '1.75rem',
-                },
-              }}
-            >
-              只需要花几分钟时间注册，就可以使用我们的
-              <Typography sx={{ display: 'inline', fontFamily: 'monospace' }} variant="inherit">
-                &nbsp;Gen-Resume&nbsp;
-              </Typography>
-              生成简历啦 🎉
-            </Typography> */}
-          </Box>
-
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              flex: 1,
-              py: 2,
-              height: '100%',
-              '@media(max-width: 800px)': { flex: '0 0 100%' },
-            }}
-          >
-            <Paper
-              elevation={0}
-              sx={{
-                py: 2,
-                px: 1,
-              }}
-            >
-              <Typography
-                sx={{
-                  background:
-                    'linear-gradient(95deg, #1c7ed6 15%, #22b8cf 45%, #FB5343 75%, #6549D5 100%) 98%/200% 100%',
-                  textTransform: 'capitalize',
-                  WebkitBackgroundClip: 'text',
-                  backgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  mb: 1,
-                  fontFamily: 'Public Sans,sans-serif',
-                  display: 'inline-block',
-                }}
-              >
-                sign up
-              </Typography>
-              <Typography
-                variant="h4"
-                sx={{
-                  margin: '0',
-                  fontWeight: '700',
-                  lineHeight: '1.3333333333333333',
-                  fontSize: '1.125rem',
-                  '@media (min-width: 600px)': {
-                    fontSize: '1.5rem',
-                  },
-                  '@media (min-width: 900px)': {
-                    fontSize: '1.75rem',
-                  },
-                }}
-              >
+        <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: '100vh' }}>
+          <Grid item xs={12} sm={8} md={6}>
+            <Paper elevation={0} sx={styles.signUpPaper}>
+              <Typography sx={styles.subTitle}>Sign Up</Typography>
+              <Typography variant="h4" sx={styles.title}>
                 注册
               </Typography>
-              <Typography
-                variant="subtitle2"
-                sx={{
-                  mt: 2,
-                }}
-              >
+              <Typography variant="subtitle2" sx={{ mt: 2 }}>
                 已经有账号了？那就去
                 <Link href="/login" sx={{ textDecoration: 'none' }}>
                   &nbsp;登录&nbsp;
@@ -191,13 +91,7 @@ const SignUp = () => {
                 吧！
               </Typography>
 
-              <Box
-                sx={{
-                  maxWidth: 375,
-                  margin: 'auto',
-                  mt: 3,
-                }}
-              >
+              <Box sx={styles.contentBox}>
                 <Box
                   component="form"
                   sx={{
@@ -225,7 +119,6 @@ const SignUp = () => {
                         error={!!errors.email}
                         helperText={errors.email?.message}
                         {...field}
-                        // onChange={(e) => field.onChange(e.target.value)}
                       />
                     )}
                   />
@@ -266,11 +159,17 @@ const SignUp = () => {
                 </Box>
               </Box>
             </Paper>
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
       </Container>
+
+      <ToastContainer />
     </>
   );
+};
+
+SignUp.getLayout = function getLayout(page: ReactElement) {
+  return <SimpleAppBarLayout>{page}</SimpleAppBarLayout>;
 };
 
 export default SignUp;
