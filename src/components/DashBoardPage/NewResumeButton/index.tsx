@@ -2,7 +2,14 @@ import { Box, ButtonBase, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import AddIcon from '@mui/icons-material/Add';
 import styles from './styles';
-import NewResumeModalForm from '../NewResumeModalForm';
+import NewResumeModalForm, { NewResumeFormData } from '../NewResumeModalForm';
+import api from '@/api';
+import { toast } from 'react-toastify';
+
+interface Result {
+  success: true;
+  message: string;
+}
 
 const NewResumeButtonBase = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',
@@ -11,8 +18,7 @@ const NewResumeButtonBase = styled(ButtonBase)(({ theme }) => ({
   borderRadius: '1rem',
   background: '#fff',
   [theme.breakpoints.down('sm')]: {
-    // width: '100% !important', // Overrides inline-style
-    width: 186,
+    width: '100%',
     height: 232,
   },
   '&:hover, &.Mui-focusVisible': {
@@ -30,15 +36,26 @@ const NewResumeButtonBase = styled(ButtonBase)(({ theme }) => ({
 }));
 
 const NewResumeButton = () => {
+  const handleSubmit = async (data: NewResumeFormData) => {
+    const { data: res } = await api<NewResumeFormData, Result>({
+      url: '/api/v1/resumes',
+      method: 'POST',
+      data,
+    });
 
-  function handleCreateResume () {
-    console.log('new')
-  }
+    if (!res.success) {
+      toast.error(res.message);
+      return false;
+    }
+
+    toast.success(res.message);
+    return true;
+  };
 
   return (
     <Box>
-      <NewResumeModalForm>
-        <NewResumeButtonBase onClick={handleCreateResume}>
+      <NewResumeModalForm onSubmit={handleSubmit}>
+        <NewResumeButtonBase>
           <AddIcon sx={styles.addIconSX} />
         </NewResumeButtonBase>
       </NewResumeModalForm>

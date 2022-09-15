@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -9,9 +9,11 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { Controller, useForm } from 'react-hook-form';
 import { Box, TextField } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 export interface NewResumeModalFormProps {
   children?: React.ReactElement;
+  onSubmit: (data: NewResumeFormData) => Promise<boolean>;
 }
 
 export interface NewResumeFormData {
@@ -21,15 +23,15 @@ export interface NewResumeFormData {
 
 export default function NewResumeModalForm(props: NewResumeModalFormProps) {
   const { children } = props;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false)
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const {
     control,
-    register,
     handleSubmit,
-    watch,
+    reset,
     formState: { errors },
   } = useForm<NewResumeFormData>({
     defaultValues: {
@@ -48,7 +50,7 @@ export default function NewResumeModalForm(props: NewResumeModalFormProps) {
 
   const trigger = children || (
     <Button variant="outlined" onClick={handleClickOpen}>
-      Open responsive dialog
+      Open
     </Button>
   );
 
@@ -57,7 +59,15 @@ export default function NewResumeModalForm(props: NewResumeModalFormProps) {
     trigger.props?.onClick?.(e);
   };
 
-  const onSubmit = (data: NewResumeFormData) => console.log(data);
+  const onSubmit = async (data: NewResumeFormData) => {
+    setSubmitting(true);
+    const result = await props.onSubmit(data);
+    setSubmitting(false);
+    if (result) {
+      reset();
+      setOpen(false);
+    }
+  };
 
   return (
     <>
@@ -109,8 +119,8 @@ export default function NewResumeModalForm(props: NewResumeModalFormProps) {
               rules={{
                 required: '标识不能为空',
                 pattern: {
-                  value: /^[A-Za-z0-9]+$/,
-                  message: '标识只能是英文和数字组成',
+                  value: /^[A-Za-z0-9-]+$/,
+                  message: '标识只能是英文和数字或符号 "-" 组成',
                 },
               }}
               render={({ field }) => (
@@ -129,9 +139,9 @@ export default function NewResumeModalForm(props: NewResumeModalFormProps) {
             <Button variant="text" onClick={handleClose}>
               取消
             </Button>
-            <Button variant="contained" type="submit" autoFocus>
+            <LoadingButton loading={submitting} variant="contained" type="submit" autoFocus>
               创建
-            </Button>
+            </LoadingButton>
           </DialogActions>
         </Box>
       </Dialog>

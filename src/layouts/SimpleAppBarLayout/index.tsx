@@ -3,6 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import Link from '@/Link';
 
 export interface SimpleAppBarLayoutProps {
   children?: React.ReactNode;
@@ -20,7 +21,7 @@ const SimpleAppBarLayout = (props: SimpleAppBarLayoutProps) => {
               className="title"
               variant="h6"
               noWrap
-              component="a"
+              component={Link}
               href="/"
               sx={{
                 mr: 2,
