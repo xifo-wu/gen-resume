@@ -1,4 +1,4 @@
-import { ReactElement, useMemo } from 'react';
+import { ReactElement, useMemo, useState } from 'react';
 import {
   Box,
   IconButton,
@@ -10,8 +10,9 @@ import {
   Divider,
   Grid,
 } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import router from 'next/router';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useForm, Controller } from 'react-hook-form';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';
@@ -40,6 +41,7 @@ const Login = () => {
       password: '',
     },
   });
+  const [loading, setLoading] = useState(false);
 
   const toastConfig = useMemo(
     () => ({
@@ -54,21 +56,22 @@ const Login = () => {
     [],
   );
 
-  // TODO 加上 Loading 什么的
   const onSubmit = async (payload: FormData) => {
+    setLoading(true);
     const { data } = await api<any>({
       method: 'POST',
       url: '/api/v1/user/login',
       data: payload,
-    })
+    });
+    setLoading(false);
 
     if (!data.success) {
       toast.error(data.message, toastConfig);
       return;
     }
 
-    window.localStorage.setItem("accessToken", data.meta.accessToken);
-    router.push('/dashboard')
+    window.localStorage.setItem('accessToken', data.meta.accessToken);
+    router.push('/dashboard');
   };
 
   return (
@@ -139,9 +142,16 @@ const Login = () => {
                     )}
                   />
 
-                  <Button size="large" variant="contained" type="submit" fullWidth sx={{ my: 1 }}>
+                  <LoadingButton
+                    loading={loading}
+                    size="large"
+                    variant="contained"
+                    type="submit"
+                    fullWidth
+                    sx={{ my: 1 }}
+                  >
                     登录
-                  </Button>
+                  </LoadingButton>
                 </Box>
 
                 <Box sx={{ mt: 3 }}>
@@ -161,8 +171,6 @@ const Login = () => {
           </Grid>
         </Grid>
       </Container>
-
-      <ToastContainer />
     </>
   );
 };
