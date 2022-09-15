@@ -1,47 +1,15 @@
 import { useEffect, useMemo } from 'react';
-import type { ReactElement } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Box, Container, styled } from '@mui/material';
+import type { ReactElement } from 'react';;
+import { Box, Container } from '@mui/material';
 import { useRouter } from 'next/router';
 import styles from './styles';
-import Logo from '@/components/Logo';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import useUser from '@/hooks/useUser';
+import FullPageLoading from '@/components/FullPageLoading';
 
 export interface DashboardLayoutProps {
   children?: ReactElement;
 }
-
-const variants = {
-  out: {
-    opacity: 0,
-    y: 40,
-    transition: {
-      duration: 0.75,
-    },
-  },
-  in: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.75,
-      delay: 0.5,
-    },
-  },
-};
-
-const MotionDiv = styled(motion.div)({
-  position: 'fixed',
-  p: 3,
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  zIndex: 99999,
-  width: '100vw',
-  height: '100vh',
-  backdropFilter: 'saturate(200%) blur(30px)',
-  backgroundColor: 'rgba(255, 255, 255, 0.8)',
-});
 
 const DashboardLayout = (props: DashboardLayoutProps) => {
   const { children } = props;
@@ -70,15 +38,7 @@ const DashboardLayout = (props: DashboardLayoutProps) => {
 
   return (
     <Box sx={styles.layoutSX}>
-      <AnimatePresence initial={false} exitBeforeEnter>
-        {loading && (
-          <MotionDiv variants={variants} animate="in" initial="out" exit="out">
-            <Box sx={{ width: 500, height: 500 }}>
-              <Logo />
-            </Box>
-          </MotionDiv>
-        )}
-      </AnimatePresence>
+      <FullPageLoading loading={loading} />
       <Container
         sx={{
           transition:
