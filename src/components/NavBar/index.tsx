@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useScrollTrigger } from '@mui/material';
 import router from 'next/router';
+import useUser from '@/hooks/useUser';
 
 const pages = ['控制台'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -56,6 +57,7 @@ function ElevationScroll(props: Props) {
 }
 
 const ResponsiveNavBar = (props: any) => {
+  const { user = {} } = useUser();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -156,13 +158,16 @@ const ResponsiveNavBar = (props: any) => {
               Gen-Resume
             </Typography>
             <Box sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}>
-              <Button
-                className="menu-item"
-                onClick={() => router.push('/dashboard')}
-                sx={{ my: 2, display: 'block' }}
-              >
-                控制台
-              </Button>
+              {user.id && (
+                <Button
+                  className="menu-item"
+                  onClick={() => router.push('/dashboard')}
+                  sx={{ my: 2, display: 'block' }}
+                >
+                  控制台
+                </Button>
+              )}
+
               {/* {pages.map((page) => (
                 <Button
                   className="menu-item"
@@ -176,13 +181,18 @@ const ResponsiveNavBar = (props: any) => {
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="前往登录">
-                <AccountCircleIcon
-                  className="not-login-avatar"
-                  sx={{ display: 'block', cursor: 'pointer' }}
-                  onClick={() => router.push('/login')}
-                />
-              </Tooltip>
+              {user.id ? (
+                <Avatar alt={user.username} variant="circular" src={user.avatar} />
+              ) : (
+                <Tooltip title="前往登录">
+                  <AccountCircleIcon
+                    className="not-login-avatar"
+                    sx={{ display: 'block', cursor: 'pointer' }}
+                    onClick={() => router.push('/login')}
+                  />
+                </Tooltip>
+              )}
+
               {/* <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
