@@ -23,6 +23,7 @@ import NewResumeButton from '@/components/DashBoardPage/NewResumeButton';
 import styles from '@/components/DashBoardPage/styles';
 import useApi from '@/hooks/useApi';
 import useList from '@/hooks/useList';
+import { useRouter } from 'next/router';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -60,9 +61,9 @@ const StyledImage = styled(Image)(({ theme }) => ({
 
 const DashBoard: NextPageWithLayout = () => {
   const [value, setValue] = React.useState(0);
+  const router = useRouter();
   const { user = {} } = useUser();
   const { data = [], error, loading } = useList('/api/v1/resumes');
-  const isSM = useMediaQuery((theme: Theme) => theme.breakpoints.up('sm'));
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -76,8 +77,10 @@ const DashBoard: NextPageWithLayout = () => {
     return data.map((item: any) => (
       <Grid key={item.id} item xs={6} sm="auto">
         <Box
+          onClick={() => router.push(`/${user.username}/${item.slug}/edit`)}
           sx={(theme) => ({
             position: 'relative',
+            cursor: 'pointer',
             width: 264,
             height: 372,
             borderRadius: '1rem',
