@@ -10,6 +10,12 @@ const fetcher = (key: string, params: any) =>
     params,
   });
 
+/**
+ * 统一格式的 Api 请求 Hooks
+ * @param key 后端接口地址，同 SWR
+ * @param config SWR 配置项
+ */
+
 const useApi = (key: Key, config?: SWRConfiguration) => {
   const { data, error } = useSWR(key, fetcher, config);
 
@@ -30,7 +36,7 @@ const useApi = (key: Key, config?: SWRConfiguration) => {
     };
   }
 
-  const { data: responseData, status } = data;
+  const { data: responseData, meta, status } = data;
   if (data.success === false || status >= 400) {
     return {
       loading,
@@ -40,7 +46,8 @@ const useApi = (key: Key, config?: SWRConfiguration) => {
 
   return {
     loading,
-    data: responseData,
+    data: responseData.data,
+    meta,
   };
 };
 

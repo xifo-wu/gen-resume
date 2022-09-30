@@ -22,7 +22,6 @@ import CoverBox from '@/components/DashBoardPage/CoverBox';
 import NewResumeButton from '@/components/DashBoardPage/NewResumeButton';
 import styles from '@/components/DashBoardPage/styles';
 import useApi from '@/hooks/useApi';
-import useList from '@/hooks/useList';
 import { useRouter } from 'next/router';
 
 interface TabPanelProps {
@@ -63,7 +62,7 @@ const DashBoard: NextPageWithLayout = () => {
   const [value, setValue] = React.useState(0);
   const router = useRouter();
   const { user = {} } = useUser();
-  const { data = [], error, loading } = useList('/api/v1/resumes');
+  const { data = [], error, loading } = useApi('/api/v1/resumes');
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);

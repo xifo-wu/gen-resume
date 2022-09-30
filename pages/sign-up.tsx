@@ -1,4 +1,4 @@
-import { ReactElement, useMemo } from 'react';
+import { ReactElement, useMemo, useEffect } from 'react';
 import {
   Box,
   IconButton,
@@ -57,7 +57,7 @@ const SignUp = () => {
   );
 
   const onSubmit = async (payload: FormData) => {
-    const { data } = await api<any>({
+    const { data } = await api<any, any>({
       method: 'POST',
       url: '/api/v1/user/sign-up',
       data: payload,
@@ -139,6 +139,8 @@ const SignUp = () => {
                       />
                     )}
                   />
+
+                  <Box id="demo" />
 
                   <Button size="large" variant="contained" type="submit" fullWidth sx={{ my: 1 }}>
                     注册

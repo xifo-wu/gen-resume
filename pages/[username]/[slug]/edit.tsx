@@ -8,6 +8,9 @@ import SideBar from '@/pageComponents/EditResumePage/SideBar';
 import _ from 'lodash';
 import templateMap from '@/components/Resume/templateMap';
 import styles from './styles';
+import useApi from '@/hooks/useApi';
+import { useRouter } from 'next/router';
+import FullPageLoading from '@/components/FullPageLoading';
 
 export interface DashboardLayoutProps {
   noPadding?: boolean;
@@ -116,7 +119,14 @@ const fakeData = {
 
 const EditResumePage = (props: DashboardLayoutProps) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [data, setData] = useState(fakeData);
+  const router = useRouter();
+  const { query } = router;
+  const { data = {}, loading } = useApi(query.slug ? `/api/v1/resumes/${query.slug}` : null);
+  // const [data, setData] = useState(fakeData);
+
+  if (loading) {
+    return <FullPageLoading loading={loading} />;
+  }
 
   // @ts-ignore
   const ResumeComponent = templateMap[data.layoutType].component || null;
@@ -125,7 +135,7 @@ const EditResumePage = (props: DashboardLayoutProps) => {
     const nextData = _.cloneDeep(fakeData);
     nextData.layoutType = id;
     console.log(id);
-    setData(nextData);
+    // setData(nextData);
   };
 
   const handleAddModule = (id: string) => {
@@ -143,7 +153,7 @@ const EditResumePage = (props: DashboardLayoutProps) => {
       }, // 里面就放一些 css 样式。后端可以直接存字符串
     };
     // console.log(id);
-    setData(nextData);
+    // setData(nextData);
   };
 
   return (
