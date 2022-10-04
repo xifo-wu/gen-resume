@@ -127,7 +127,7 @@ const DashBoard: NextPageWithLayout = () => {
         <Card sx={styles.infoBox}>
           <Grid container alignItems="center" spacing={{ xs: 3 }}>
             <Grid item>
-              <Avatar alt="User Name" variant="rounded" sx={styles.avatar} src={user.avatar} />
+              <Avatar alt={user.username} variant="rounded" sx={styles.avatar} src={user.gravatar} />
             </Grid>
             <Grid item>
               <Box>
