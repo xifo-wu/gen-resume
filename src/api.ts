@@ -1,8 +1,14 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 type ReturnType<T> = {
-  data: T;
+  data?: T;
+  error?: ErrorResult;
   status: number;
+};
+
+type ErrorResult = {
+  success: boolean;
+  message: string;
 };
 
 async function api<T, R>(config: AxiosRequestConfig<T>): Promise<ReturnType<R>> {
@@ -30,5 +36,52 @@ async function api<T, R>(config: AxiosRequestConfig<T>): Promise<ReturnType<R>> 
     status,
   };
 }
+
+export const apiGet = async <T, R>(config: AxiosRequestConfig<T>): Promise<ReturnType<R>> => {
+  try {
+    const response = await api<T, R>({
+      method: 'GET',
+      ...config,
+    });
+
+    return response;
+  } catch (error) {
+    return {
+      data: [] as R,
+      status: 418,
+    };
+  }
+};
+
+export const apiPost = async <T, R extends any>(
+  config: AxiosRequestConfig<T>,
+): Promise<ReturnType<R>> => {
+  try {
+    const response = await api<T, R>({
+      method: 'POST',
+      ...config,
+    });
+
+    return response as ReturnType<R>;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      if (response) {
+        return {
+          error: response.data,
+          status: response.status,
+        };
+      }
+    }
+
+    return {
+      error: {
+        message: '网络故障，请检查您的网络设置',
+        success: false,
+      },
+      status: 418,
+    };
+  }
+};
 
 export default api;

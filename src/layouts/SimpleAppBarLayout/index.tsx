@@ -7,10 +7,11 @@ import Link from '@/Link';
 
 export interface SimpleAppBarLayoutProps {
   children?: React.ReactNode;
+  titleColor?: string;
 }
 
 const SimpleAppBarLayout = (props: SimpleAppBarLayoutProps) => {
-  const { children } = props;
+  const { children, titleColor = '#fff' } = props;
 
   return (
     <>
@@ -30,7 +31,7 @@ const SimpleAppBarLayout = (props: SimpleAppBarLayoutProps) => {
                 letterSpacing: '.3rem',
                 textDecoration: 'none',
                 flexGrow: 1,
-                color: '#fff',
+                color: titleColor,
               }}
             >
               Gen-Resume

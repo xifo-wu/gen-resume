@@ -23,6 +23,7 @@
     "lodash": "^4.17.21",
     "next": "latest",
     "react": "latest",
+    "react-cookie": "^4.1.1",
     "react-dom": "latest",
     "react-hook-form": "^7.34.2",
     "react-markdown": "^8.0.3",

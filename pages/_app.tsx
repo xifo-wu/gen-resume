@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 import FullPageLoading from '@/components/FullPageLoading';
 import { AnimatePresence } from 'framer-motion';
+import { CookiesProvider } from 'react-cookie';
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
@@ -64,27 +65,29 @@ export default function MyApp(props: MyAppProps) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <ThemeProvider theme={theme}>
-        {loading ? (
-          <FullPageLoading loading={loading} />
-        ) : (
-          <>
-            <CssBaseline />
-            {getLayout(<Component {...pageProps} />)}
-            <ToastContainer
-              position="top-right"
-              autoClose={1000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-            />
-          </>
-        )}
-      </ThemeProvider>
+      <CookiesProvider>
+        <ThemeProvider theme={theme}>
+          {loading ? (
+            <FullPageLoading loading={loading} />
+          ) : (
+            <>
+              <CssBaseline />
+              {getLayout(<Component {...pageProps} />)}
+              <ToastContainer
+                position="top-right"
+                autoClose={1000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+              />
+            </>
+          )}
+        </ThemeProvider>
+      </CookiesProvider>
     </CacheProvider>
   );
 }

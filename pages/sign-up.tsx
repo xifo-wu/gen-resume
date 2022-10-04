@@ -1,177 +1,269 @@
-import { ReactElement, useMemo, useEffect } from 'react';
-import {
-  Box,
-  IconButton,
-  Container,
-  TextField,
-  Paper,
-  Typography,
-  Button,
-  Divider,
-  Grid,
-} from '@mui/material';
+import { ReactElement, useRef, useState, useEffect } from 'react';
+import dayjs from 'dayjs';
 import router from 'next/router';
-import 'react-toastify/dist/ReactToastify.css';
-import { toast, ToastContainer } from 'react-toastify';
-import { useForm, Controller } from 'react-hook-form';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import GoogleIcon from '@mui/icons-material/Google';
-import SimpleAppBarLayout from '@/layouts/SimpleAppBarLayout';
-import FullBackgroundArea from '@/components/FullBackgroundArea';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Button, Theme, lighten, Grid } from '@mui/material';
+import { useCookies } from 'react-cookie';
+import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
 import Link from '@/Link';
-import api from '@/api';
-import styles from '@/styles/signUpPageStyles';
+import { apiPost } from '@/api';
+import SimpleAppBarLayout from '@/layouts/SimpleAppBarLayout';
+import Container from '@/components/SignUpPage/Container';
+import ContentContainer from '@/components/SignUpPage/ContentContainer';
+import Form from '@/components/Form';
+import InputField from '@/components/Form/InputField';
+import SubTitle from '@/components/SignUpPage/SubTitle';
+import Title from '@/components/SignUpPage/Title';
+import PasswordField from '@/components/Form/PasswordField';
+import { emailRegex } from '@/enums/const';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 interface FormData {
   email: string;
+  verifyCode: string;
   password: string;
+  passwordConfirm: string;
 }
 
-const backgroundUrl =
-  'https://images.unsplash.com/photo-1648315156503-5335899e3470?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80';
+const contentBoxSx = (theme: Theme) => ({
+  [theme.breakpoints.down('md')]: {
+    borderRadius: 1,
+    background: '#fff',
+    boxShadow: '0 0 35px rgba(0, 0, 0, 0.1)',
+    margin: 'auto',
+    maxWidth: 640,
+  },
+});
 
 const SignUp = () => {
+  const [cookies, setCookie] = useCookies(['can-send-verify-code']);
+  const [countDown, setCountDown] = useState<number>(0);
+  const [countDowning, setCountDowning] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const intervalRef = useRef<string | number | NodeJS.Timer | null | undefined>(null);
+
   const {
     control,
     reset,
     handleSubmit,
+    getValues,
+    watch,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
       email: '',
+      verifyCode: '',
       password: '',
+      passwordConfirm: '',
     },
   });
 
-  const toastConfig = useMemo(
-    () => ({
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    }),
-    [],
-  );
+  const password = useRef({});
+  password.current = watch('password', '');
 
-  const onSubmit = async (payload: FormData) => {
-    const { data } = await api<any, any>({
-      method: 'POST',
-      url: '/api/v1/user/sign-up',
-      data: payload,
-    });
+  useEffect(() => {
+    const canSendVerifyCode = cookies['can-send-verify-code'];
 
-    if (!data.success) {
-      toast.error(data.message, toastConfig);
+    if (canSendVerifyCode) {
+      setCountDowning(true);
+      intervalRef.current = setInterval(() => {
+        const nextCountDown = dayjs().diff(canSendVerifyCode, 's') * -1;
+        setCountDown(nextCountDown);
+        if (nextCountDown === 0) {
+          intervalRef.current && clearInterval(intervalRef.current);
+          setCountDowning(false);
+        }
+      }, 1000);
+    } else {
+      setCountDowning(false);
+    }
+
+    return () => {
+      intervalRef.current && clearInterval(intervalRef.current);
+    };
+  }, []);
+
+  // #region 发送验证码方法
+  const sendVerifyCode = async () => {
+    const email = getValues('email');
+
+    if (!email) {
+      toast.error('请先输入邮箱');
       return;
     }
 
-    toast.success(data.message, toastConfig);
+    if (!email.match(emailRegex)) {
+      toast.error('邮箱格式不正确');
+      return;
+    }
+
+    const { status, data, error } = await apiPost({
+      url: '/api/v1/auth/verify-codes/email',
+      data: {
+        email,
+      },
+    });
+
+    if (status >= 400 && error) {
+      toast.error(error.message);
+      return;
+    }
+
+    const expiresDate = dayjs().add(60, 's');
+    setCookie('can-send-verify-code', expiresDate.format('YYYY-MM-DDTHH:mm:ssZ'), {
+      expires: expiresDate.toDate(),
+    });
+
+    setCountDowning(true);
+    intervalRef.current = setInterval(() => {
+      const nextCountDown = dayjs().diff(expiresDate, 's') * -1;
+      setCountDown(nextCountDown);
+      if (nextCountDown === 0) {
+        intervalRef.current && clearInterval(intervalRef.current);
+        setCountDowning(false);
+      }
+    }, 1000);
+
+    toast.success('发送成功，请检查邮箱～');
+  };
+  // #endregion
+
+  const onSubmit = async (payload: FormData) => {
+    setSubmitting(true);
+    const { status, data, error } = await apiPost<FormData, any>({
+      url: '/api/v1/auth/sign-up/using-email',
+      data: payload,
+    });
+
+    if (status >= 400 && error) {
+      setSubmitting(false);
+      toast.error(error.message);
+      return;
+    }
+
+    if (data) {
+      toast.success('注册成功 🎉 自动登录中～');
+    }
+
     reset();
+    await new Promise((r) => setTimeout(r, 1000));
+    const { meta } = data;
+    window.localStorage.setItem('accessToken', meta.token);
+    setSubmitting(false);
+    router.push('/dashboard');
   };
 
   return (
-    <>
-      <FullBackgroundArea src={backgroundUrl} sx={{ zIndex: -1, position: 'fixed' }} />
-      <Container>
-        <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: '100vh' }}>
-          <Grid item xs={12} sm={8} md={6}>
-            <Paper elevation={0} sx={styles.signUpPaper}>
-              <Typography sx={styles.subTitle}>Sign Up</Typography>
-              <Typography variant="h4" sx={styles.title}>
-                注册
-              </Typography>
-              <Typography variant="subtitle2" sx={{ mt: 2 }}>
-                已经有账号了？那就去
-                <Link href="/login" sx={{ textDecoration: 'none' }}>
-                  &nbsp;登录&nbsp;
-                </Link>
-                吧！
-              </Typography>
+    <Container>
+      <Grid container>
+        <Grid item xl={5} lg={5} md={6} xs={12} sx={contentBoxSx}>
+          <ContentContainer>
+            <Title>创建新账号</Title>
+            <SubTitle>
+              已经有账号了？
+              <Link href="/login" sx={{ textDecoration: 'none' }}>
+                &nbsp;登录&nbsp;
+              </Link>
+            </SubTitle>
+            <Form onSubmit={handleSubmit(onSubmit)} sx={{ mt: 4 }}>
+              <InputField<FormData>
+                name="email"
+                control={control}
+                errors={errors}
+                rules={{
+                  required: '邮箱不能为空',
+                  pattern: {
+                    value: emailRegex,
+                    message: '邮箱格式不正确',
+                  },
+                }}
+                inputField={{
+                  label: '邮箱',
+                }}
+              />
 
-              <Box sx={styles.contentBox}>
-                <Box
-                  component="form"
-                  sx={{
-                    px: 1,
-                    '& .MuiTextField-root': { my: 2 },
-                  }}
-                  autoComplete="off"
-                  onSubmit={handleSubmit(onSubmit)}
-                >
-                  <Controller
-                    name="email"
-                    control={control}
-                    rules={{
-                      required: '邮箱不能为空',
-                      pattern: {
-                        value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                        message: '邮箱格式不正确',
-                      },
-                    }}
-                    render={({ field }) => (
-                      <TextField
-                        label="邮箱"
-                        variant="outlined"
-                        sx={{ width: '100%' }}
-                        error={!!errors.email}
-                        helperText={errors.email?.message}
-                        {...field}
-                      />
-                    )}
-                  />
+              <InputField<FormData>
+                name="verifyCode"
+                control={control}
+                errors={errors}
+                rules={{
+                  required: '验证码不能为空',
+                }}
+                inputField={{
+                  label: '验证码',
+                  type: 'number',
+                  sx: {
+                    '& .MuiInputBase-input': {
+                      flex: 1,
+                      mr: 2,
+                    },
+                  },
+                  InputProps: {
+                    endAdornment: (
+                      <Button onClick={sendVerifyCode} variant="contained" disabled={countDowning}>
+                        {countDown ? countDown : '发送验证码'}
+                      </Button>
+                    ),
+                  },
+                }}
+              />
 
-                  <Controller
-                    name="password"
-                    control={control}
-                    rules={{ required: '密码不能为空' }}
-                    render={({ field }) => (
-                      <TextField
-                        label="密码"
-                        type="password"
-                        variant="outlined"
-                        error={!!errors.password}
-                        helperText={errors.password?.message}
-                        sx={{ width: '100%' }}
-                        {...field}
-                      />
-                    )}
-                  />
+              <PasswordField<FormData>
+                name="password"
+                control={control}
+                errors={errors}
+                rules={{
+                  required: '密码不能为空',
+                }}
+                inputField={{
+                  label: '密码',
+                }}
+              />
 
-                  <Box id="demo" />
+              <PasswordField<FormData>
+                name="passwordConfirm"
+                control={control}
+                errors={errors}
+                rules={{
+                  required: '确认密码不能为空',
+                  validate: (value) => value === password.current || '输入的两次密码不相同',
+                }}
+                inputField={{
+                  label: '确认密码',
+                }}
+              />
 
-                  <Button size="large" variant="contained" type="submit" fullWidth sx={{ my: 1 }}>
-                    注册
-                  </Button>
-                </Box>
-
-                <Box sx={{ mt: 3 }}>
-                  <Divider>第三方账号注册</Divider>
-                  <Box sx={{ display: 'flex', gap: 2, mt: 1, justifyContent: 'center' }}>
-                    <IconButton disabled>
-                      <GitHubIcon />
-                    </IconButton>
-
-                    <IconButton disabled>
-                      <GoogleIcon />
-                    </IconButton>
-                  </Box>
-                </Box>
-              </Box>
-            </Paper>
-          </Grid>
+              <LoadingButton
+                loading={submitting}
+                loadingPosition="start"
+                size="large"
+                variant="contained"
+                type="submit"
+                fullWidth
+                sx={(theme) => ({
+                  my: 2,
+                  height: 56,
+                  fontSize: '1.125rem',
+                  background: `linear-gradient(126deg, ${theme.palette.primary.main}, ${lighten(
+                    theme.palette.primary.main,
+                    0.45,
+                  )});`,
+                })}
+              >
+                {submitting ? '注册中，请稍后' : '注册'}
+              </LoadingButton>
+            </Form>
+          </ContentContainer>
         </Grid>
-      </Container>
-
-      <ToastContainer />
-    </>
+      </Grid>
+    </Container>
   );
 };
 
 SignUp.getLayout = function getLayout(page: ReactElement) {
-  return <SimpleAppBarLayout>{page}</SimpleAppBarLayout>;
+  return <SimpleAppBarLayout titleColor="#fff">{page}</SimpleAppBarLayout>;
 };
 
 export default SignUp;
