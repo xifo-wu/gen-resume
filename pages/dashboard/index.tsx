@@ -90,7 +90,14 @@ const DashBoard: NextPageWithLayout = () => {
             },
           })}
         >
-          <StyledImage layout="fill" objectFit="cover" src={item.cover} />
+          <StyledImage
+            layout="fill"
+            objectFit="cover"
+            src={
+              item.cover ||
+              'https://images.unsplash.com/photo-1531913223931-b0d3198229ee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=989&q=80'
+            }
+          />
         </Box>
 
         <Box sx={{ ml: 1, mt: 1 }}>
@@ -127,7 +134,12 @@ const DashBoard: NextPageWithLayout = () => {
         <Card sx={styles.infoBox}>
           <Grid container alignItems="center" spacing={{ xs: 3 }}>
             <Grid item>
-              <Avatar alt={user.username} variant="rounded" sx={styles.avatar} src={user.gravatar} />
+              <Avatar
+                alt={user.username}
+                variant="rounded"
+                sx={styles.avatar}
+                src={user.gravatar}
+              />
             </Grid>
             <Grid item>
               <Box>

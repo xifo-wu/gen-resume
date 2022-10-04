@@ -3,8 +3,9 @@ import { styled } from '@mui/material/styles';
 import AddIcon from '@mui/icons-material/Add';
 import styles from './styles';
 import NewResumeModalForm, { NewResumeFormData } from '../NewResumeModalForm';
-import api from '@/api';
+import api, { apiPost } from '@/api';
 import { toast } from 'react-toastify';
+import { templateLayoutTypes } from '@/components/Resume/templateMap';
 
 interface Result {
   success: true;
@@ -36,19 +37,24 @@ const NewResumeButtonBase = styled(ButtonBase)(({ theme }) => ({
 }));
 
 const NewResumeButton = () => {
-  const handleSubmit = async (data: NewResumeFormData) => {
-    const { data: res } = await api<NewResumeFormData, Result>({
+  const handleSubmit = async (payload: NewResumeFormData) => {
+    const { data, error } = await apiPost({
       url: '/api/v1/resumes',
-      method: 'POST',
-      data,
-    });
+      data: {
+        ...payload,
+        layoutType: templateLayoutTypes[0],
+      },
+    })
 
-    if (!res.success) {
-      toast.error(res.message);
+    if (error) {
+      toast.error(error.message);
       return false;
     }
 
-    toast.success(res.message);
+
+    console.log(data, error)
+
+    toast.success('创建成功',);
     return true;
   };
 

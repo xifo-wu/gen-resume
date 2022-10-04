@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Style1 from './Style1';
 import Style2 from './Style2';
 import type { ResumeType } from './types';
@@ -26,5 +27,7 @@ const templateMap: Record<string, TemplateType> = {
     component: Style2,
   },
 };
+
+export const templateLayoutTypes = _.map(templateMap, (item) => item.id)
 
 export default templateMap;
