@@ -237,6 +237,8 @@ const SignUp = () => {
 
               <LoadingButton
                 loading={submitting}
+                // fix MUI warning
+                startIcon={<></>}
                 loadingPosition="start"
                 size="large"
                 variant="contained"
