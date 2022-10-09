@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { forwardRef, useEffect } from 'react';
+import { forwardRef, useContext, useEffect } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -17,14 +17,15 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 // project imports
 import Link from '@/Link';
 import styles from '../indexStyles';
+import MenuListContext from '../MenuListContext';
 
 const NavItem = ({ item, level }: any) => {
   const theme = useTheme();
-  const matchesSM = useMediaQuery(theme.breakpoints.down('lg'));
+  const menuContext = useContext(MenuListContext);
 
   const Icon = item.icon;
   const itemIcon = item?.icon ? (
-    <Icon stroke={1.5} size="1.3rem" />
+    <Icon sx={{ width: "1.3rem" }} />
   ) : (
     <FiberManualRecordIcon
       sx={{
@@ -48,9 +49,15 @@ const NavItem = ({ item, level }: any) => {
     )),
   };
 
-  const itemHandler = (id: any) => {
-    // dispatch({ type: MENU_OPEN, id });
-    // if (matchesSM) dispatch({ type: SET_MENU, opened: false });
+  if (item.callModal) {
+    listItemProps = {
+      // @ts-ignore
+      component: 'a'
+    }
+  }
+
+  const itemHandler = (id: string) => {
+    menuContext.onMenuClick(id, item);
   };
 
   // active menu item on page load
@@ -62,7 +69,6 @@ const NavItem = ({ item, level }: any) => {
     if (currentIndex > -1) {
     //   dispatch({ type: MENU_OPEN, id: item.id });
     }
-    // eslint-disable-next-line
   }, []);
 
   return (
@@ -78,7 +84,7 @@ const NavItem = ({ item, level }: any) => {
         pl: `${level * 24}px`,
       }}
     //   selected={customization.isOpen.findIndex((id) => id === item.id) > -1}
-    //   onClick={() => itemHandler(item.id)}
+      onClick={() => itemHandler(item.id)}
     >
       <ListItemIcon sx={{ my: 'auto', minWidth: !item?.icon ? 18 : 36 }}>{itemIcon}</ListItemIcon>
       <ListItemText

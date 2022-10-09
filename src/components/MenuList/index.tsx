@@ -1,13 +1,27 @@
-// material-ui
+import { useMemo } from 'react';
 import { Typography } from '@mui/material';
 
+// 该组件学习自 https://github.com/codedthemes/berry-free-react-admin-template
 // project imports
 import NavGroup from './NavGroup';
+import MenuListContext from './MenuListContext';
 import menuItem from '@/menu-items';
+import type { MenuItem } from './types';
 
-// ==============================|| SIDEBAR MENU LIST ||============================== //
+interface MenuListProps {
+  onMenuClick: (id: string, item: MenuItem) => void;
+}
 
-const MenuList = () => {
+export { MenuItem };
+
+const MenuList = ({ onMenuClick }: MenuListProps) => {
+  const menuContextValue = useMemo(
+    () => ({
+      onMenuClick,
+    }),
+    [],
+  );
+
   const navItems = menuItem.items.map((item) => {
     switch (item.type) {
       case 'group':
@@ -21,7 +35,7 @@ const MenuList = () => {
     }
   });
 
-  return <>{navItems}</>;
+  return <MenuListContext.Provider value={menuContextValue}>{navItems}</MenuListContext.Provider>;
 };
 
 export default MenuList;
