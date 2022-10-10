@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import type { ReactElement } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { Box, Button, Paper } from '@mui/material';
+import { AppBar, Box, Button, Paper, Toolbar, useTheme } from '@mui/material';
 
-import RightSideBar from '@/pageComponents/EditResumePage/RightSideBar';
-import SideBar from '@/pageComponents/EditResumePage/SideBar';
 import _ from 'lodash';
 import templateMap from '@/components/Resume/templateMap';
 import styles from './styles';
 import useApi from '@/hooks/useApi';
 import { useRouter } from 'next/router';
+
+// project imports
 import FullPageLoading from '@/components/FullPageLoading';
+import LeftSideBar from '@/components/EditResumePage/LeftSideBar';
+import RightSideBar from '@/components/EditResumePage/RightSideBar';
+import Header from '@/components/EditResumePage/Header';
 
 export interface DashboardLayoutProps {
   noPadding?: boolean;
@@ -118,11 +121,23 @@ const fakeData = {
 };
 
 const EditResumePage = (props: DashboardLayoutProps) => {
+  // 获取主题
+  const theme = useTheme();
+  // 控制左侧菜单显示隐藏
+  const [leftDrawerOpened, setLeftDrawerOpened] = useState(true);
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const router = useRouter();
   const { query } = router;
   const { data = {}, loading } = useApi(query.slug ? `/api/v1/resumes/${query.slug}` : null);
   // const [data, setData] = useState(fakeData);
+
+  // 已经添加的模块(排序后)
+  const addedModules = data.moduleOrder ? data.moduleOrder.split(',') : [];
+
+  console.log('请求来的', data);
+
+  console.log('已经添加的模块', addedModules);
 
   if (loading) {
     return <FullPageLoading loading={loading} />;
@@ -156,9 +171,30 @@ const EditResumePage = (props: DashboardLayoutProps) => {
     // setData(nextData);
   };
 
+  const handleLeftDrawerToggle = () => {
+    setLeftDrawerOpened(!leftDrawerOpened);
+  };
+
   return (
     <Box sx={styles.layoutSX}>
-      <SideBar
+      <AppBar
+        enableColorOnDark
+        position="fixed"
+        color="inherit"
+        elevation={0}
+        sx={{
+          bgcolor: theme.palette.background.default,
+          transition: leftDrawerOpened ? theme.transitions.create('width') : 'none',
+        }}
+      >
+        <Toolbar>
+          <Header leftDrawerOpened={leftDrawerOpened} onLeftDrawerToggle={handleLeftDrawerToggle} />
+        </Toolbar>
+      </AppBar>
+
+      <LeftSideBar drawerOpen={leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
+      <RightSideBar modules={addedModules} />
+      {/* <SideBar
         mobileOpen={mobileOpen}
         onClose={() => setMobileOpen(false)}
         onSelectedTemplate={handleSelectedTemplate}
@@ -170,7 +206,7 @@ const EditResumePage = (props: DashboardLayoutProps) => {
         onClose={() => setMobileOpen(false)}
         onSelectedTemplate={handleSelectedTemplate}
         onAddModule={handleAddModule}
-      />
+      /> */}
       <TransformWrapper
         centerOnInit
         minScale={0.25}

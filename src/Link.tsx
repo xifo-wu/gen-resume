@@ -8,6 +8,7 @@ import { styled } from '@mui/material/styles';
 // Add support for the sx prop for consistency with the other branches.
 const Anchor = styled('a')({});
 
+// @ts-ignore
 interface NextLinkComposedProps
   extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
     Omit<NextLinkProps, 'href' | 'as' | 'onClick' | 'onMouseEnter'> {
@@ -82,10 +83,10 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(props,
   }
 
   const linkAs = linkAsProp || as;
-  const nextjsProps = { to: href, linkAs, replace, scroll, shallow, prefetch, locale };
+  const nextJsProps = { to: href, linkAs, replace, scroll, shallow, prefetch, locale };
 
   if (noLinkStyle) {
-    return <NextLinkComposed className={className} ref={ref} {...nextjsProps} {...other} />;
+    return <NextLinkComposed className={className} ref={ref} {...nextJsProps} {...other} />;
   }
 
   return (
@@ -93,7 +94,7 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(props,
       component={NextLinkComposed}
       className={className}
       ref={ref}
-      {...nextjsProps}
+      {...nextJsProps}
       {...other}
     />
   );

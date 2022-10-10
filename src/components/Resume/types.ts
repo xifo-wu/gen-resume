@@ -16,20 +16,15 @@ export type BasicsDataKeys =
   | 'age'
   | 'avatar';
 
-// 个人信息
+// 个人信息基础信息
 export type BasicsData = {
-  [key in BasicsDataKeys]: {
-    label: string;
-    visible: boolean;
-    value: string;
-    isShowLabel: boolean;
-  };
+  [key in BasicsDataKeys]: string;
 };
 
 // 简历
 export interface ResumeType {
+  resumeBasic: BasicsData;
   config: ResumeConfig;
-  basics: BasicsData;
   workExperience: any;
   education: any;
 }

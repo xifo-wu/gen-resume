@@ -84,4 +84,36 @@ export const apiPost = async <T, R extends any>(
   }
 };
 
+export const apiPut = async <T, R extends any>(
+  config: AxiosRequestConfig<T>,
+): Promise<ReturnType<R>> => {
+  try {
+    const response = await api<T, R>({
+      method: 'PUT',
+      ...config,
+    });
+
+    return response as ReturnType<R>;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      if (response) {
+        return {
+          error: response.data,
+          status: response.status,
+        };
+      }
+    }
+
+    return {
+      error: {
+        message: '网络故障，请检查您的网络设置',
+        success: false,
+      },
+      status: 418,
+    };
+  }
+};
+
+
 export default api;

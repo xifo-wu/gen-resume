@@ -25,7 +25,7 @@ const NavItem = ({ item, level }: any) => {
 
   const Icon = item.icon;
   const itemIcon = item?.icon ? (
-    <Icon sx={{ width: "1.3rem" }} />
+    <Icon sx={{ width: '1.3rem' }} />
   ) : (
     <FiberManualRecordIcon
       sx={{
@@ -44,16 +44,14 @@ const NavItem = ({ item, level }: any) => {
   }
 
   let listItemProps = {
-    component: forwardRef((props, ref) => (
-      <Link {...props} href={item.url} target={itemTarget} />
-    )),
+    component: forwardRef((props, ref) => <Link {...props} href={item.url} target={itemTarget} />),
   };
 
   if (item.callModal) {
     listItemProps = {
       // @ts-ignore
-      component: 'a'
-    }
+      component: 'a',
+    };
   }
 
   const itemHandler = (id: string) => {
@@ -67,7 +65,7 @@ const NavItem = ({ item, level }: any) => {
       .split('/')
       .findIndex((id) => id === item.id);
     if (currentIndex > -1) {
-    //   dispatch({ type: MENU_OPEN, id: item.id });
+      //   dispatch({ type: MENU_OPEN, id: item.id });
     }
   }, []);
 
@@ -83,13 +81,14 @@ const NavItem = ({ item, level }: any) => {
         py: level > 1 ? 1 : 1.25,
         pl: `${level * 24}px`,
       }}
-    //   selected={customization.isOpen.findIndex((id) => id === item.id) > -1}
+      //   selected={customization.isOpen.findIndex((id) => id === item.id) > -1}
       onClick={() => itemHandler(item.id)}
     >
       <ListItemIcon sx={{ my: 'auto', minWidth: !item?.icon ? 18 : 36 }}>{itemIcon}</ListItemIcon>
       <ListItemText
         primary={
           <Typography
+            variant="body1"
             // variant={customization.isOpen.findIndex((id) => id === item.id) > -1 ? 'h5' : 'body1'}
             color="inherit"
           >
@@ -98,12 +97,7 @@ const NavItem = ({ item, level }: any) => {
         }
         secondary={
           item.caption && (
-            <Typography
-              variant="caption"
-              sx={styles.subMenuCaption}
-              display="block"
-              gutterBottom
-            >
+            <Typography variant="caption" sx={styles.subMenuCaption} display="block" gutterBottom>
               {item.caption}
             </Typography>
           )
