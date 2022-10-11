@@ -4,42 +4,57 @@ import Typography from '@mui/material/Typography';
 import OpenWithIcon from '@mui/icons-material/OpenWith';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
+// Hooks
+import { useDragControls, useMotionValue } from 'framer-motion';
+import { useRaisedShadow } from '@/hooks/useRaisedShadow';
+
+// Components
+import { Reorder } from 'framer-motion';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+
+// Styles
 import styles from './ModuleItemCardStyle';
 
+// Types
+import type { ModuleMapKeys } from '@/components/Resume/modules';
+
+// Constant
+import { moduleMap } from '@/components/Resume/modules';
+
 interface ModuleItemCardProps {
-  data: {
-    id: string;
-    name: string;
-    en: string;
-  };
+  item: ModuleMapKeys;
 }
 
 const ModuleItemCard = (props: ModuleItemCardProps) => {
-  const { data } = props;
+  const { item } = props;
+  const y = useMotionValue(0);
+  const boxShadow = useRaisedShadow(y);
+  const controls = useDragControls();
+  const data = moduleMap[item];
 
   return (
-    <Box sx={styles.container}>
-      <Grid container spacing={1} alignItems="center">
-        <Grid item xs="auto">
-          <Box sx={styles.grabBox}>
-            <OpenWithIcon sx={styles.grabIcon} />
-          </Box>
-        </Grid>
-        <Grid item xs={7}>
-          <Box>
-            <Typography sx={styles.enTitle}>{data.en}</Typography>
-            <Typography variant="h5" sx={styles.title}>
-              {data.name}
-            </Typography>
-          </Box>
-        </Grid>
-        <Grid item xs>
-          <Box sx={styles.editBox}>
-            <EditOutlinedIcon sx={styles.editIcon} />
-          </Box>
-        </Grid>
-      </Grid>
-    </Box>
+    <Reorder.Item
+      value={item}
+      id={item}
+      dragListener={false}
+      dragControls={controls}
+      style={{ boxShadow, y }}
+    >
+      <Box sx={styles.container}>
+        <Box sx={styles.editBox}>
+          <EditOutlinedIcon sx={styles.editIcon} />
+        </Box>
+        <Box sx={styles.titleBox}>
+          <Typography sx={styles.enTitle}>{data.en}</Typography>
+          <Typography variant="h5" sx={styles.title}>
+            {data.name}
+          </Typography>
+        </Box>
+        <Box sx={styles.grabBox} onPointerDown={(e) => controls.start(e)}>
+          <DragIndicatorIcon sx={styles.grabIcon} />
+        </Box>
+      </Box>
+    </Reorder.Item>
   );
 };
 

@@ -16,7 +16,7 @@ import type { MenuItem } from '../MenuList';
 
 // styles
 import styles from './LeftSideBarStyles';
-import {apiPut} from '@/api';
+import { apiPut } from '@/api';
 
 // constant
 const drawerWidth = 240;
@@ -46,11 +46,11 @@ const LeftSideBar = (props: Props) => {
 
   // #region 确认选择添加模块
   const handleChooseResumeModule = async (value: string) => {
-    console.log(value)
+    console.log(value);
     if (value === 'educations') {
       const { data, error } = await apiPut<any, any>({
-        url: `/api/v1/resumes/${query.slug}/add-education`
-      })
+        url: `/api/v1/resumes/${query.slug}/add-education`,
+      });
 
       if (error) {
         toast.error(error.message);

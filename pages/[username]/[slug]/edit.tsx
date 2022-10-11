@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { ReactElement } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { AppBar, Box, Button, Paper, Toolbar, useTheme } from '@mui/material';
+import { AppBar, Box, Button, Paper, Toolbar, useTheme, useMediaQuery } from '@mui/material';
 
 import _ from 'lodash';
 import templateMap from '@/components/Resume/templateMap';
@@ -123,8 +123,18 @@ const fakeData = {
 const EditResumePage = (props: DashboardLayoutProps) => {
   // 获取主题
   const theme = useTheme();
+  // 监听窗口宽度是否大于 900 px
+  const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
   // 控制左侧菜单显示隐藏
-  const [leftDrawerOpened, setLeftDrawerOpened] = useState(true);
+  const [leftDrawerOpened, setLeftDrawerOpened] = useState(false);
+  // 控制有侧菜单显示隐藏
+  const [rightDrawerOpened, setRightDrawerOpened] = useState(false);
+
+  // 当窗口匹配发生变化时
+  useEffect(() => {
+    setRightDrawerOpened(matchUpMd);
+    setLeftDrawerOpened(matchUpMd);
+  }, [matchUpMd]);
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const router = useRouter();
@@ -175,38 +185,26 @@ const EditResumePage = (props: DashboardLayoutProps) => {
     setLeftDrawerOpened(!leftDrawerOpened);
   };
 
+  const handleRightDrawerToggle = () => {
+    setRightDrawerOpened(!rightDrawerOpened);
+  };
+
   return (
     <Box sx={styles.layoutSX}>
-      <AppBar
-        enableColorOnDark
-        position="fixed"
-        color="inherit"
-        elevation={0}
-        sx={{
-          bgcolor: theme.palette.background.default,
-          transition: leftDrawerOpened ? theme.transitions.create('width') : 'none',
-        }}
-      >
-        <Toolbar>
-          <Header leftDrawerOpened={leftDrawerOpened} onLeftDrawerToggle={handleLeftDrawerToggle} />
-        </Toolbar>
-      </AppBar>
+      <Header
+        leftDrawerOpened={leftDrawerOpened}
+        rightDrawerOpened={rightDrawerOpened}
+        onLeftDrawerToggle={handleLeftDrawerToggle}
+        onRightDrawerToggle={handleRightDrawerToggle}
+      />
 
       <LeftSideBar drawerOpen={leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
-      <RightSideBar modules={addedModules} />
-      {/* <SideBar
-        mobileOpen={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        onSelectedTemplate={handleSelectedTemplate}
-        onAddModule={handleAddModule}
-      />
       <RightSideBar
-        data={data}
-        mobileOpen={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        onSelectedTemplate={handleSelectedTemplate}
-        onAddModule={handleAddModule}
-      /> */}
+        drawerOpen={rightDrawerOpened}
+        drawerToggle={handleRightDrawerToggle}
+        modules={addedModules}
+      />
+
       <TransformWrapper
         centerOnInit
         minScale={0.25}

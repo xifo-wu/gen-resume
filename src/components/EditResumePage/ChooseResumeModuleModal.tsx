@@ -14,6 +14,9 @@ import Grid from '@mui/material/Grid';
 import LoadingButton from '@mui/lab/LoadingButton';
 import ChooseModuleItemCard from './ChooseModuleItemCard';
 
+// Constant
+import modules from '@/components/Resume/modules';
+
 // types
 import type { ModuleItemCardProps } from './ChooseModuleItemCard';
 
@@ -24,34 +27,6 @@ export interface ChooseResumeModuleModalProps {
   onSubmit: (select: string) => Promise<boolean>;
   onChange?: (open: boolean) => void;
 }
-
-const modules = [
-  {
-    id: 'workExperiences',
-    name: '工作经历',
-    en: 'Work Experiences',
-  },
-  {
-    id: 'educations',
-    name: '教育经历',
-    en: 'Educations',
-  },
-  {
-    id: 'projects',
-    name: '项目经历',
-    en: 'Projects',
-  },
-  {
-    id: 'skills',
-    name: '专业技能',
-    en: 'Professional Skills',
-  },
-  {
-    id: 'certificates',
-    name: '技能证书',
-    en: 'Skill Certificates',
-  },
-];
 
 export default function ChooseResumeModuleModal(props: ChooseResumeModuleModalProps) {
   const { children, open: openProps, ignoreTrigger = false, onChange } = props;
