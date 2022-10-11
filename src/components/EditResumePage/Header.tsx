@@ -28,8 +28,6 @@ const Header = ({
   const theme = useTheme();
   const { user = {} } = useUser();
 
-  console.log(user, 'user', theme.transitions.create('width'));
-
   return (
     <AppBar
       enableColorOnDark

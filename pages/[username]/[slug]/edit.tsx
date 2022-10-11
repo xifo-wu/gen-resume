@@ -143,11 +143,9 @@ const EditResumePage = (props: DashboardLayoutProps) => {
   // const [data, setData] = useState(fakeData);
 
   // 已经添加的模块(排序后)
-  const addedModules = data.moduleOrder ? data.moduleOrder.split(',') : [];
+  // const addedModules = data.moduleOrder ? data.moduleOrder.split(',') : [];
 
-  console.log('请求来的', data);
-
-  console.log('已经添加的模块', addedModules);
+  // console.log('请求来的', data);
 
   if (loading) {
     return <FullPageLoading loading={loading} />;
@@ -202,7 +200,7 @@ const EditResumePage = (props: DashboardLayoutProps) => {
       <RightSideBar
         drawerOpen={rightDrawerOpened}
         drawerToggle={handleRightDrawerToggle}
-        modules={addedModules}
+        modules={data.moduleOrder}
       />
 
       <TransformWrapper

@@ -1,27 +1,31 @@
-import React from 'react';
-import { useTheme, useMediaQuery } from '@mui/material';
+import React, { useEffect } from 'react';
 import _ from 'lodash';
+import { toast } from 'react-toastify';
+import { apiPut } from '@/api';
 
 // Components
 import { Reorder } from 'framer-motion';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Grid from '@mui/material/Grid';
 import ModuleItemCard from './ModuleItemCard';
 
-// Styles
-import styles from './RightSideBarStyles';
+// Hooks
+import { useTheme, useMediaQuery } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useDebounce } from 'react-use';
 
 // Types
 import type { DrawerProps } from '@mui/material/Drawer';
 import type { ModuleMapKeys } from '@/components/Resume/modules';
 
+// Styles
+import styles from './RightSideBarStyles';
+
 // Constant
-import modulesItems from '@/components/Resume/modules';
 const drawerWidth = 240;
 
 interface Props {
-  modules: ModuleMapKeys[];
+  modules: string;
   drawerOpen?: boolean;
   window?: () => Window;
   drawerToggle?: DrawerProps['onClose'];
@@ -30,21 +34,50 @@ interface Props {
 // 右侧菜单
 // 用于编辑模块、模块排序等
 const RightSideBar = (props: Props) => {
-  const { window, modules, drawerOpen, drawerToggle } = props;
+  const { window: windowProps, modules = '', drawerOpen, drawerToggle } = props;
   const theme = useTheme();
-  const [reordered, setReordered] = React.useState<ModuleMapKeys[]>(modules);
+  const router = useRouter();
+  const { query } = router;
+  const [reordered, setReordered] = React.useState(modules);
 
   const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container = windowProps !== undefined ? () => windowProps().document.body : undefined;
+  const [debouncedReordered, setDebouncedReordered] = React.useState('');
 
-  const handleReorder = (newItems: ModuleMapKeys[]) => {
-    setReordered(newItems);
+  useDebounce(
+    () => {
+      const reorderFunc = async () => {
+        const { error } = await apiPut<any, any>({
+          url: `/api/v1/resumes/${query.slug}`,
+          data: {
+            moduleOrder: reordered,
+          }
+        });
+
+        if (error) {
+          toast.error(error.message);
+          return
+        }
+      }
+
+      if (debouncedReordered) {
+        reorderFunc();
+      }
+
+      setDebouncedReordered(reordered);
+    },
+    2000,
+    [reordered],
+  );
+
+  const handleReorder = (newItems: string[]) => {
+    setReordered(newItems.join(','));
   };
 
   const drawer = (
     <Box sx={styles.modulesBox}>
-      <Reorder.Group axis="y" onReorder={handleReorder} values={reordered}>
-        {_.map(reordered, (item) => (
+      <Reorder.Group axis="y" onReorder={handleReorder} values={reordered.split(',')}>
+        {_.map(reordered.split(','), (item: ModuleMapKeys) => (
           <ModuleItemCard key={item} item={item} />
         ))}
       </Reorder.Group>
