@@ -13,6 +13,11 @@ import { useRouter } from 'next/router';
 import FullPageLoading from '@/components/FullPageLoading';
 import { AnimatePresence } from 'framer-motion';
 import { CookiesProvider } from 'react-cookie';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+
+import 'dayjs/locale/zh-cn';
+
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
@@ -60,34 +65,38 @@ export default function MyApp(props: MyAppProps) {
     };
   }, []);
 
+  const locale = 'zh-cn'
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <CookiesProvider>
-        <ThemeProvider theme={theme}>
-          {loading ? (
-            <FullPageLoading loading={loading} />
-          ) : (
-            <>
-              <CssBaseline />
-              {getLayout(<Component {...pageProps} />)}
-              <ToastContainer
-                position="top-right"
-                autoClose={1000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-              />
-            </>
-          )}
-        </ThemeProvider>
-      </CookiesProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
+        <CookiesProvider>
+          <ThemeProvider theme={theme}>
+            {loading ? (
+              <FullPageLoading loading={loading} />
+            ) : (
+              <>
+                <CssBaseline />
+                {getLayout(<Component {...pageProps} />)}
+                <ToastContainer
+                  position="top-right"
+                  autoClose={1000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                />
+              </>
+            )}
+          </ThemeProvider>
+        </CookiesProvider>
+      </LocalizationProvider>
     </CacheProvider>
   );
 }

@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
-import _ from 'lodash';
+import React from 'react';
 import { toast } from 'react-toastify';
 import { apiPut } from '@/api';
+import _ from 'lodash';
 
 // Components
 import { Reorder } from 'framer-motion';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import ModuleItemCard from './ModuleItemCard';
+import ResumeBasicModalForm from './ResumeBasicModalForm';
 
 // Hooks
 import { useTheme, useMediaQuery } from '@mui/material';
@@ -25,6 +26,7 @@ import styles from './RightSideBarStyles';
 const drawerWidth = 240;
 
 interface Props {
+  data: any;
   modules: string;
   drawerOpen?: boolean;
   window?: () => Window;
@@ -34,15 +36,16 @@ interface Props {
 // 右侧菜单
 // 用于编辑模块、模块排序等
 const RightSideBar = (props: Props) => {
-  const { window: windowProps, modules = '', drawerOpen, drawerToggle } = props;
+  const { data, window: windowProps, modules = '', drawerOpen, drawerToggle } = props;
   const theme = useTheme();
   const router = useRouter();
   const { query } = router;
   const [reordered, setReordered] = React.useState(modules);
+  const [debouncedReordered, setDebouncedReordered] = React.useState('');
+  const [resumeBasicOpen, setResumeBasicOpen] = React.useState(false);
 
   const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
   const container = windowProps !== undefined ? () => windowProps().document.body : undefined;
-  const [debouncedReordered, setDebouncedReordered] = React.useState('');
 
   useDebounce(
     () => {
@@ -51,14 +54,14 @@ const RightSideBar = (props: Props) => {
           url: `/api/v1/resumes/${query.slug}`,
           data: {
             moduleOrder: reordered,
-          }
+          },
         });
 
         if (error) {
           toast.error(error.message);
-          return
+          return;
         }
-      }
+      };
 
       if (debouncedReordered) {
         reorderFunc();
@@ -74,11 +77,34 @@ const RightSideBar = (props: Props) => {
     setReordered(newItems.join(','));
   };
 
+  const handleEditClick = (item: ModuleMapKeys) => {
+    if (item === 'resumeBasic') {
+      setResumeBasicOpen(true);
+      return;
+    }
+  };
+
+  // #region 提交简历个人信息
+  const handleResumeBasicSubmit = async (values: any) => {
+    const { data, error } = await apiPut<any, any>({
+      url: `/api/v1/resumes/${query.slug}/update-resume-basic`,
+      data: values,
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return false;
+    }
+
+    return true;
+  };
+  // #endregion
+
   const drawer = (
     <Box sx={styles.modulesBox}>
       <Reorder.Group axis="y" onReorder={handleReorder} values={reordered.split(',')}>
         {_.map(reordered.split(','), (item: ModuleMapKeys) => (
-          <ModuleItemCard key={item} item={item} />
+          <ModuleItemCard onEditClick={handleEditClick} key={item} item={item} />
         ))}
       </Reorder.Group>
     </Box>
@@ -98,6 +124,13 @@ const RightSideBar = (props: Props) => {
       >
         {drawer}
       </Drawer>
+
+      <ResumeBasicModalForm
+        initData={data.resumeBasic || {}}
+        open={resumeBasicOpen}
+        onChange={setResumeBasicOpen}
+        onSubmit={handleResumeBasicSubmit}
+      />
     </Box>
   );
 };

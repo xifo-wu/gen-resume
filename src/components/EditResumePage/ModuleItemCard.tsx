@@ -23,14 +23,19 @@ import { moduleMap } from '@/components/Resume/modules';
 
 interface ModuleItemCardProps {
   item: ModuleMapKeys;
+  onEditClick: (item: ModuleMapKeys) => void;
 }
 
 const ModuleItemCard = (props: ModuleItemCardProps) => {
-  const { item } = props;
+  const { item, onEditClick } = props;
   const y = useMotionValue(0);
   const boxShadow = useRaisedShadow(y);
   const controls = useDragControls();
   const data = moduleMap[item];
+
+  const handleEditClick = () => {
+    onEditClick(item);
+  }
 
   return (
     <Reorder.Item
@@ -41,7 +46,7 @@ const ModuleItemCard = (props: ModuleItemCardProps) => {
       style={{ boxShadow, y }}
     >
       <Box sx={styles.container}>
-        <Box sx={styles.editBox}>
+        <Box sx={styles.editBox} onClick={handleEditClick}>
           <EditOutlinedIcon sx={styles.editIcon} />
         </Box>
         <Box sx={styles.titleBox}>
