@@ -126,6 +126,7 @@ const RightSideBar = (props: Props) => {
       </Drawer>
 
       <ResumeBasicModalForm
+        ignoreTrigger
         initData={data.resumeBasic || {}}
         open={resumeBasicOpen}
         onChange={setResumeBasicOpen}
