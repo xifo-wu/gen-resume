@@ -1,27 +1,29 @@
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
+import dayjs from 'dayjs';
+
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 import { Controller, useForm } from 'react-hook-form';
 import { Box, TextField } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 // Components
 import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
 import InputField from '@/components/Form/InputField';
+import KVConfigField from './KVConfigField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 // Hooks
 import { useControlled } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // Constant
 import { emailRegex } from '@/enums/const';
-import dayjs, { Dayjs } from 'dayjs';
 
 // Types
 export interface ResumeBasicModalFormProps {
@@ -35,14 +37,23 @@ export interface ResumeBasicModalFormProps {
 
 export interface ResumeBasicData {
   name: string;
+  nameConfig: string;
   email: string;
+  emailConfig: string;
   job: string;
+  jobConfig: string;
   mobile: string;
-  avatar: string;
+  mobileConfig: string;
   educationalQualifications: string;
+  educationalQualificationsConfig: string;
   website: string;
+  websiteConfig: string;
   birthday: string;
+  birthdayConfig: string;
   age: number;
+  ageConfig: string;
+  avatar: string;
+  avatarConfig: string;
 }
 
 const isDate = (value: any) => {
@@ -50,11 +61,16 @@ const isDate = (value: any) => {
     return true;
   }
 
-  if (value.isValid()) {
+  let needValid = value;
+  if (typeof needValid === 'string') {
+    needValid = dayjs(needValid);
+  }
+
+  if (needValid.isValid()) {
     return true;
   }
 
-  return '时间存在错误有误'
+  return '时间存在错误有误';
 };
 
 export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
@@ -71,7 +87,6 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<ResumeBasicData>({
     defaultValues: initData,
@@ -102,11 +117,11 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
   };
 
   const onSubmit = async (data: ResumeBasicData) => {
-    console.log(data.birthday, "xxxx")
     setSubmitting(true);
     const result = await props.onSubmit({
       ...data,
-      birthday: dayjs(data.birthday).format("YYYY/MM/DD")
+      ...(data.birthday && { birthday: dayjs(data.birthday).format('YYYY/MM/DD') }),
+      age: parseInt(String(data.age), 10),
     });
     setSubmitting(false);
     if (result) {
@@ -134,7 +149,7 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
             autoComplete="off"
           >
             <Grid container spacing={1}>
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12} sm={6} md={6} lg={4}>
                 <InputField<ResumeBasicData>
                   name="name"
                   control={control}
@@ -148,7 +163,15 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12} sm={6} md={6} lg={2}>
+                <Controller
+                  name="nameConfig"
+                  control={control}
+                  render={({ field }) => <KVConfigField {...field} />}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={6} lg={4}>
                 <InputField<ResumeBasicData>
                   name="job"
                   control={control}
@@ -162,7 +185,15 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12} sm={6} md={6} lg={2}>
+                <Controller
+                  name="jobConfig"
+                  control={control}
+                  render={({ field }) => <KVConfigField {...field} />}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={6} lg={4}>
                 <InputField<ResumeBasicData>
                   name="mobile"
                   control={control}
@@ -175,8 +206,15 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                   }}
                 />
               </Grid>
+              <Grid item xs={12} sm={6} md={6} lg={2}>
+                <Controller
+                  name="mobileConfig"
+                  control={control}
+                  render={({ field }) => <KVConfigField {...field} />}
+                />
+              </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12} sm={6} md={6} lg={4}>
                 <InputField<ResumeBasicData>
                   name="email"
                   control={control}
@@ -194,19 +232,15 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
-                <InputField<ResumeBasicData>
-                  name="avatar"
+              <Grid item xs={12} sm={6} md={6} lg={2}>
+                <Controller
+                  name="emailConfig"
                   control={control}
-                  errors={errors}
-                  inputField={{
-                    label: '头像',
-                    helperText: '当前只支持网络图片地址，推荐大小 200 * 100',
-                  }}
+                  render={({ field }) => <KVConfigField {...field} />}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12} sm={6} md={6} lg={4}>
                 <InputField<ResumeBasicData>
                   name="educationalQualifications"
                   control={control}
@@ -217,7 +251,15 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12} sm={6} md={6} lg={2}>
+                <Controller
+                  name="educationalQualificationsConfig"
+                  control={control}
+                  render={({ field }) => <KVConfigField {...field} />}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={6} lg={4}>
                 <InputField<ResumeBasicData>
                   name="website"
                   control={control}
@@ -228,7 +270,15 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12} sm={6} md={6} lg={2}>
+                <Controller
+                  name="websiteConfig"
+                  control={control}
+                  render={({ field }) => <KVConfigField {...field} />}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={6} lg={4}>
                 <InputField<ResumeBasicData>
                   name="age"
                   control={control}
@@ -240,7 +290,15 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12} sm={6} md={6} lg={2}>
+                <Controller
+                  name="ageConfig"
+                  control={control}
+                  render={({ field }) => <KVConfigField {...field} />}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={6} lg={4}>
                 <Controller
                   name="birthday"
                   control={control}
@@ -250,9 +308,7 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                   render={({ field }) => (
                     <DatePicker
                       disableFuture
-                      // inputFormat="yyyy/MM/DD"
                       label="生日"
-                      // mask="____/__/__"
                       views={['year', 'month', 'day']}
                       renderInput={(params) => (
                         <TextField
@@ -265,6 +321,34 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                       {...field}
                     />
                   )}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={6} lg={2}>
+                <Controller
+                  name="birthdayConfig"
+                  control={control}
+                  render={({ field }) => <KVConfigField {...field} />}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={6} lg={4}>
+                <InputField<ResumeBasicData>
+                  name="avatar"
+                  control={control}
+                  errors={errors}
+                  inputField={{
+                    label: '头像',
+                    helperText: '当前只支持网络图片地址，推荐大小 200 * 100',
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={6} lg={2}>
+                <Controller
+                  name="avatarConfig"
+                  control={control}
+                  render={({ field }) => <KVConfigField {...field} />}
                 />
               </Grid>
             </Grid>
