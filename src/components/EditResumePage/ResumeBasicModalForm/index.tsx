@@ -24,6 +24,7 @@ import { useTheme } from '@mui/material/styles';
 
 // Constant
 import { emailRegex } from '@/enums/const';
+import { watch } from 'fs';
 
 // Types
 export interface ResumeBasicModalFormProps {
@@ -149,7 +150,7 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
             autoComplete="off"
           >
             <Grid container spacing={1}>
-              <Grid item xs={12} sm={6} md={6} lg={4}>
+              <Grid item xs={12} sm={6} md={6}>
                 <InputField<ResumeBasicData>
                   name="name"
                   control={control}
@@ -163,15 +164,23 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={2}>
+              <Grid item xs={12} sm={6} md={6}>
                 <Controller
                   name="nameConfig"
                   control={control}
-                  render={({ field }) => <KVConfigField {...field} />}
+                  render={({ field }) => (
+                    <KVConfigField
+                      defaultValues={{
+                        visible: true,
+                        showLabel: false,
+                      }}
+                      {...field}
+                    />
+                  )}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={4}>
+              <Grid item xs={12} sm={6} md={6}>
                 <InputField<ResumeBasicData>
                   name="job"
                   control={control}
@@ -185,15 +194,24 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={2}>
+              <Grid item xs={12} sm={6} md={6}>
                 <Controller
                   name="jobConfig"
                   control={control}
-                  render={({ field }) => <KVConfigField {...field} />}
+                  render={({ field }) => (
+                    <KVConfigField
+                      defaultValues={{
+                        visible: true,
+                        showLabel: true,
+                        label: '求职目标',
+                      }}
+                      {...field}
+                    />
+                  )}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={4}>
+              <Grid item xs={12} sm={6} md={6}>
                 <InputField<ResumeBasicData>
                   name="mobile"
                   control={control}
@@ -206,15 +224,24 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                   }}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} md={6} lg={2}>
+              <Grid item xs={12} sm={6} md={6}>
                 <Controller
                   name="mobileConfig"
                   control={control}
-                  render={({ field }) => <KVConfigField {...field} />}
+                  render={({ field }) => (
+                    <KVConfigField
+                      defaultValues={{
+                        visible: true,
+                        showLabel: false,
+                        label: '电话',
+                      }}
+                      {...field}
+                    />
+                  )}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={4}>
+              <Grid item xs={12} sm={6} md={6}>
                 <InputField<ResumeBasicData>
                   name="email"
                   control={control}
@@ -232,15 +259,24 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={2}>
+              <Grid item xs={12} sm={6} md={6}>
                 <Controller
                   name="emailConfig"
                   control={control}
-                  render={({ field }) => <KVConfigField {...field} />}
+                  render={({ field }) => (
+                    <KVConfigField
+                      defaultValues={{
+                        visible: true,
+                        showLabel: false,
+                        label: '邮箱',
+                      }}
+                      {...field}
+                    />
+                  )}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={4}>
+              <Grid item xs={12} sm={6} md={6}>
                 <InputField<ResumeBasicData>
                   name="educationalQualifications"
                   control={control}
@@ -251,15 +287,24 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={2}>
+              <Grid item xs={12} sm={6} md={6}>
                 <Controller
                   name="educationalQualificationsConfig"
                   control={control}
-                  render={({ field }) => <KVConfigField {...field} />}
+                  render={({ field }) => (
+                    <KVConfigField
+                      defaultValues={{
+                        visible: true,
+                        showLabel: false,
+                        label: '学历',
+                      }}
+                      {...field}
+                    />
+                  )}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={4}>
+              <Grid item xs={12} sm={6} md={6}>
                 <InputField<ResumeBasicData>
                   name="website"
                   control={control}
@@ -270,15 +315,24 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={2}>
+              <Grid item xs={12} sm={6} md={6}>
                 <Controller
                   name="websiteConfig"
                   control={control}
-                  render={({ field }) => <KVConfigField {...field} />}
+                  render={({ field }) => (
+                    <KVConfigField
+                      defaultValues={{
+                        visible: false,
+                        showLabel: false,
+                        label: '网站',
+                      }}
+                      {...field}
+                    />
+                  )}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={4}>
+              <Grid item xs={12} sm={6} md={6}>
                 <InputField<ResumeBasicData>
                   name="age"
                   control={control}
@@ -290,15 +344,24 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={2}>
+              <Grid item xs={12} sm={6} md={6}>
                 <Controller
                   name="ageConfig"
                   control={control}
-                  render={({ field }) => <KVConfigField {...field} />}
+                  render={({ field }) => (
+                    <KVConfigField
+                      defaultValues={{
+                        visible: false,
+                        showLabel: false,
+                        label: '年龄',
+                      }}
+                      {...field}
+                    />
+                  )}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={4}>
+              <Grid item xs={12} sm={6} md={6}>
                 <Controller
                   name="birthday"
                   control={control}
@@ -324,31 +387,48 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={2}>
+              <Grid item xs={12} sm={6} md={6}>
                 <Controller
                   name="birthdayConfig"
                   control={control}
-                  render={({ field }) => <KVConfigField {...field} />}
+                  render={({ field }) => (
+                    <KVConfigField
+                      defaultValues={{
+                        visible: false,
+                        showLabel: false,
+                        label: '生日',
+                      }}
+                      {...field}
+                    />
+                  )}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={4}>
+              <Grid item xs={12} sm={6} md={6}>
                 <InputField<ResumeBasicData>
                   name="avatar"
                   control={control}
                   errors={errors}
                   inputField={{
                     label: '头像',
-                    helperText: '当前只支持网络图片地址，推荐大小 200 * 100',
+                    helperText: '当前只支持网络图片地址，推荐大小 3.5cm * 5.2cm',
                   }}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={6} lg={2}>
+              <Grid item xs={12} sm={6} md={6}>
                 <Controller
                   name="avatarConfig"
                   control={control}
-                  render={({ field }) => <KVConfigField {...field} />}
+                  render={({ field }) => (
+                    <KVConfigField
+                      defaultValues={{
+                        visible: false,
+                        showLabel: false,
+                      }}
+                      {...field}
+                    />
+                  )}
                 />
               </Grid>
             </Grid>

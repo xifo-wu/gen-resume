@@ -47,7 +47,7 @@ const LeftSideBar = (props: Props) => {
   // #region 确认选择添加模块
   const handleChooseResumeModule = async (value: string) => {
     console.log(value);
-    if (value === 'educations') {
+    if (value === 'education') {
       const { data, error } = await apiPut<any, any>({
         url: `/api/v1/resumes/${query.slug}/add-education`,
       });

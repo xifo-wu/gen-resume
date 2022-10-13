@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import Style1 from './Style1';
-import Style2 from './Style2';
+import Style1 from './Templates/Style1';
+import Style2 from './Templates/Style2';
 import type { ResumeType } from './types';
 
 type ComponentProps = {

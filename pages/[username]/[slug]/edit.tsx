@@ -6,10 +6,12 @@ import { AppBar, Box, Button, Paper, Toolbar, useTheme, useMediaQuery } from '@m
 import _ from 'lodash';
 import templateMap from '@/components/Resume/templateMap';
 import styles from './styles';
-import useApi from '@/hooks/useApi';
-import { useRouter } from 'next/router';
 
-// project imports
+// Hooks
+import { useRouter } from 'next/router';
+import useApi from '@/hooks/useApi';
+
+// Project Components
 import FullPageLoading from '@/components/FullPageLoading';
 import LeftSideBar from '@/components/EditResumePage/LeftSideBar';
 import RightSideBar from '@/components/EditResumePage/RightSideBar';

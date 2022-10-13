@@ -34,7 +34,7 @@ interface IconsModalProps {
   onChange: (v: string) => void;
 }
 
-const IconsModal = (props: IconsModalProps) => {
+const IconsModal = React.forwardRef<unknown,IconsModalProps>(function IconsModal(props, ref) {
   const { value, onChange } = props;
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(value);
@@ -59,6 +59,12 @@ const IconsModal = (props: IconsModalProps) => {
     setOpen(false);
   };
 
+  const handleRemoveIcon = () => {
+    onChange('');
+    setSelected('');
+    setOpen(false);
+  }
+
   return (
     <>
       <Tooltip title="选择图标">
@@ -72,11 +78,11 @@ const IconsModal = (props: IconsModalProps) => {
         <DialogContent>
           <Grid container spacing={1}>
             {_.map(icons.categories, (item) => (
-              <Grid item xs={12}>
+              <Grid key={item.key} item xs={12}>
                 <Box sx={{ textTransform: 'uppercase', mb: 2 }}>{item.name}</Box>
                 <Grid container spacing={2}>
                   {_.map(item.icons, (icon) => (
-                    <Grid item xs="auto">
+                    <Grid key={icon.ligature} item xs="auto">
                       <Box
                         sx={{
                           p: 1,
@@ -98,6 +104,9 @@ const IconsModal = (props: IconsModalProps) => {
           </Grid>
         </DialogContent>
         <DialogActions sx={{ p: 2 }}>
+          <Button variant="text" onClick={handleRemoveIcon}>
+            移除图标
+          </Button>
           <Button variant="text" onClick={handleClose}>
             取消
           </Button>
@@ -108,7 +117,7 @@ const IconsModal = (props: IconsModalProps) => {
       </Dialog>
     </>
   );
-};
+});
 
 export default function ChooseIconField<T extends FieldValues>({
   name,
