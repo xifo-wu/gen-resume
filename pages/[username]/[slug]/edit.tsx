@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import type { ReactElement } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { AppBar, Box, Button, Paper, Toolbar, useTheme, useMediaQuery } from '@mui/material';
+import { Box, Paper, Toolbar, useTheme, useMediaQuery } from '@mui/material';
 
 import _ from 'lodash';
 import templateMap from '@/components/Resume/templateMap';

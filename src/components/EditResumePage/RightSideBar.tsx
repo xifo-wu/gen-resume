@@ -8,6 +8,7 @@ import { Reorder } from 'framer-motion';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import ModuleItemCard from './ModuleItemCard';
+import EducationModalForm from './EducationModalForm';
 import ResumeBasicModalForm from './ResumeBasicModalForm';
 
 // Hooks
@@ -42,7 +43,10 @@ const RightSideBar = (props: Props) => {
   const { query } = router;
   const [reordered, setReordered] = React.useState(modules);
   const [debouncedReordered, setDebouncedReordered] = React.useState('');
+
+  // Modal 框相关 State
   const [resumeBasicOpen, setResumeBasicOpen] = React.useState(false);
+  const [educationOpen, setEducationOpen] = React.useState(false);
 
   const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
   const container = windowProps !== undefined ? () => windowProps().document.body : undefined;
@@ -82,6 +86,11 @@ const RightSideBar = (props: Props) => {
       setResumeBasicOpen(true);
       return;
     }
+
+    if (item === 'education') {
+      setEducationOpen(true);
+      return;
+    }
   };
 
   // #region 提交简历个人信息
@@ -98,6 +107,12 @@ const RightSideBar = (props: Props) => {
 
     return true;
   };
+  // #endregion
+
+  // #region 提交简历模块
+  const handleEducationOpenSubmit = async (values: any) => {
+    return false;
+  }
   // #endregion
 
   const drawer = (
@@ -131,6 +146,14 @@ const RightSideBar = (props: Props) => {
         open={resumeBasicOpen}
         onChange={setResumeBasicOpen}
         onSubmit={handleResumeBasicSubmit}
+      />
+
+      <EducationModalForm
+        ignoreTrigger
+        initData={data.education || {}}
+        open={educationOpen}
+        onChange={setEducationOpen}
+        onSubmit={handleEducationOpenSubmit}
       />
     </Box>
   );

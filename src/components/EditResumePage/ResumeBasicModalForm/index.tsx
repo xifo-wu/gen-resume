@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
 
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Controller, useForm } from 'react-hook-form';
@@ -24,7 +23,6 @@ import { useTheme } from '@mui/material/styles';
 
 // Constant
 import { emailRegex } from '@/enums/const';
-import { watch } from 'fs';
 
 // Types
 export interface ResumeBasicModalFormProps {

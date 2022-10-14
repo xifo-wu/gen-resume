@@ -11,8 +11,9 @@ import Typography from '@mui/material/Typography';
 import type { ResumeConfig, ModuleBase } from '@/components/Resume/types';
 
 interface Props {
+  selectedItem?: boolean;
   config?: ResumeConfig;
-  data: ModuleBase;
+  data: Partial<ModuleBase>;
 }
 
 const ModuleTitle = ({
@@ -21,6 +22,7 @@ const ModuleTitle = ({
     themeBgTextColor: '',
   },
   data,
+  selectedItem,
 }: Props) => {
   const theme = useTheme();
   const { label, visible } = data;
@@ -30,6 +32,7 @@ const ModuleTitle = ({
       sx={{
         display: visible ? 'block' : 'none',
         my: 1,
+        ...(selectedItem && { transform: 'scale(0.6633)', my: 0, flex: 1 })
       }}
     >
       <Box
