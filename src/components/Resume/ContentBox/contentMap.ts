@@ -1,21 +1,27 @@
 import EducationContent1 from './Education/Content1';
-
+import EducationContent1Preview from './Education/Content1/preview';
 
 export type ContentType = {
   id: string;
-  preview: string;
+  preview: React.FC<any>;
   component: React.FC<any>;
 };
 
-const contentMap: Record<string, ContentType> = {
-  // 内容展示模块
-  // 教育模块
+export const educationMap: Record<string, ContentType> = {
   educationContent1: {
     id: 'educationContent1',
-    preview:
-      'https://images.unsplash.com/photo-1661870467713-1047a3e1f283?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDE0fGJvOGpRS1RhRTBZfHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
+    preview: EducationContent1Preview,
     component: EducationContent1,
-  }
+  },
+};
+
+export type EducationMapKeys = keyof typeof educationMap;
+export type ContentMapKeys = EducationMapKeys;
+
+const contentMap: Record<ContentMapKeys, ContentType> = {
+  // 内容展示模块
+  // 教育模块
+  ...educationMap,
 };
 
 export default contentMap;

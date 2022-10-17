@@ -1,6 +1,5 @@
 import { Box, lighten, Link, Typography } from '@mui/material';
 import _ from 'lodash';
-import contentMap from '@/components/Resume/ContentBox/contentMap';
 import ResumeBasic from './ResumeBasic';
 
 // Types
@@ -8,8 +7,8 @@ import type { ModulesKey, ResumeType } from '@/components/Resume/types';
 import type { ModuleTitles } from '@/components/Resume/Templates/moduleTitleMap';
 
 // Constant
+import contentMap from '@/components/Resume/ContentBox/contentMap';
 import moduleTitleMap from '@/components/Resume/Templates/moduleTitleMap';
-
 
 interface Style1Props {
   data: ResumeType;
@@ -42,8 +41,10 @@ const Style1 = (props: Style1Props) => {
       <ResumeBasic data={resumeBasic} config={config} />
 
       <Box sx={{ mt: 4 }}>
-        {_.map(moduleItems, (item) => {
-          const ModuleTitle = moduleTitleMap[item.moduleTitleType as ModuleTitles]
+        {_.map(moduleItems, (item, key) => {
+          const ModuleTitle = moduleTitleMap[item.moduleTitleType as ModuleTitles];
+          const ContentComponent = contentMap[item.contentType].component;
+
           return (
             <Box
               key={item.id}
@@ -53,6 +54,9 @@ const Style1 = (props: Style1Props) => {
               }}
             >
               <ModuleTitle data={item} />
+              <Box sx={{ px: 3, my: 2 }}>
+                <ContentComponent data={item} />
+              </Box>
             </Box>
           );
         })}

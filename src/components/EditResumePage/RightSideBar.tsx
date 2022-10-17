@@ -111,7 +111,17 @@ const RightSideBar = (props: Props) => {
 
   // #region 提交简历模块
   const handleEducationOpenSubmit = async (values: any) => {
-    return false;
+    const { data, error } = await apiPut<any, any>({
+      url: `/api/v1/resumes/${query.slug}/update-education`,
+      data: values,
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return false;
+    }
+
+    return true;
   }
   // #endregion
 

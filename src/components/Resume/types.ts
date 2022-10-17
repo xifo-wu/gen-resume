@@ -50,8 +50,29 @@ export interface ModuleBase {
   visible: boolean;
   label: string;
   moduleTitleType: string;
+  contentType: string;
+  config: string;
+  removeIds?: (string | number)[];
 }
 
-export interface Education extends ModuleBase {}
+// 模块配置类型
+export interface ModuleConfig {
+  showDivider: boolean; // 是否展示分割线
+}
+
+// #region 教育经历类型
+export interface EducationDetail {
+  id?: number;
+  name?: string;
+  endOn: string | null;
+  startOn: string | null;
+  desc?: string;
+  universityMajors?: string;
+  sortIndex: number;
+}
+export interface Education extends ModuleBase {
+  educationDetails: EducationDetail[];
+}
+// #endregion
 
 export interface WorkExperience extends ModuleBase {}
