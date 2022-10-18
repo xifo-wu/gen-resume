@@ -1,5 +1,7 @@
 import EducationContent1 from './Education/Content1';
+import EducationContent2 from './Education/Content2';
 import EducationContent1Preview from './Education/Content1/preview';
+import EducationContent2Preview from './Education/Content2/preview';
 
 export type ContentType = {
   id: string;
@@ -12,6 +14,11 @@ export const educationMap: Record<string, ContentType> = {
     id: 'educationContent1',
     preview: EducationContent1Preview,
     component: EducationContent1,
+  },
+  educationContent2: {
+    id: 'educationContent2',
+    preview: EducationContent2Preview,
+    component: EducationContent2,
   },
 };
 
