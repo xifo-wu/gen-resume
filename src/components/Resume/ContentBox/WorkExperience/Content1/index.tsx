@@ -17,11 +17,10 @@ interface Props {
   data: WorkExperience;
 }
 
-const WorkExperience1 = ({ data }: Props) => {
+const WorkExperienceContent1 = ({ data }: Props) => {
   const { workExperienceDetails = [], config: configStr } = data;
   const moduleConfig = helpers.safelyParseJSON(configStr) as ModuleConfig;
 
-  console.log(workExperienceDetails, "workExperienceDetails")
   return (
     <Box>
       {(workExperienceDetails || []).map((workExperience, index) => (
@@ -36,4 +35,4 @@ const WorkExperience1 = ({ data }: Props) => {
   );
 };
 
-export default WorkExperience1;
+export default WorkExperienceContent1;
