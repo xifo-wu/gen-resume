@@ -4,10 +4,10 @@ export const moduleMap = {
     name: '基本信息',
     en: 'Basic Info',
   },
-  workExperiences: {
-    id: 'workExperiences',
+  workExperience: {
+    id: 'workExperience',
     name: '工作经历',
-    en: 'Work Experiences',
+    en: 'Work Experience',
   },
   education: {
     id: 'education',
@@ -35,7 +35,7 @@ export type ModuleMapKeys = keyof typeof moduleMap
 
 const modules = [
   moduleMap.resumeBasic,
-  moduleMap.workExperiences,
+  moduleMap.workExperience,
   moduleMap.education,
   moduleMap.projects,
   moduleMap.skills,

@@ -18,7 +18,7 @@ const buildModuleItems = (data: ResumeType, moduleOrder: string) => {
   const moduleOrderArray = (moduleOrder.split(',') as (ModulesKey | 'resumeBasic')[]) || [];
   const filteredModule = _.filter(moduleOrderArray, (item) => item !== 'resumeBasic');
 
-  return _.map(filteredModule, (item) => data[item]) as ResumeType[ModulesKey][];
+  return _.map(filteredModule, (item) => data[item]).filter(item => !!item) as ResumeType[ModulesKey][];
 };
 
 // 名为样式 1 的简历模版

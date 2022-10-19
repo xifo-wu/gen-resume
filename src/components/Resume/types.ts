@@ -75,4 +75,19 @@ export interface Education extends ModuleBase {
 }
 // #endregion
 
-export interface WorkExperience extends ModuleBase {}
+// #region 工作经历类型
+export interface WorkExperienceDetail {
+  id?: number;
+  name?: string;
+  endOn: string | null;
+  startOn: string | null;
+  desc?: string;
+  sortIndex: number;
+  jobTitle?: string;
+}
+export interface WorkExperience extends ModuleBase {
+  workExperienceDetails: WorkExperienceDetail[]
+}
+// #endregion
+
+

@@ -46,20 +46,27 @@ const LeftSideBar = (props: Props) => {
 
   // #region 确认选择添加模块
   const handleChooseResumeModule = async (value: string) => {
-    console.log(value);
+    let url = '';
     if (value === 'education') {
-      const { data, error } = await apiPut<any, any>({
-        url: `/api/v1/resumes/${query.slug}/add-education`,
-      });
-
-      if (error) {
-        toast.error(error.message);
-        return false;
-      }
-
-      return true;
+      url = `/api/v1/resumes/${query.slug}/add-education`;
     }
-    return false;
+
+    if (value === 'workExperience') {
+      url = `/api/v1/resumes/${query.slug}/add-work-experience`;
+    }
+
+    if (!url) return false;
+
+    const { error } = await apiPut<any, any>({
+      url,
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return false;
+    }
+
+    return true;
   };
   // #endregion
 

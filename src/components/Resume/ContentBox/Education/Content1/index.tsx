@@ -26,8 +26,7 @@ const EducationContent1 = ({ data }: Props) => {
       {educationDetails.map((education, index) => (
         <Box key={education.id} sx={styles.contentContainer}>
           <Content1>{education.desc || ''}</Content1>
-          {moduleConfig.showDivider && <Divider sx={{ my: 1 }} />}
-          <Divider sx={{ my: 1 }} />
+          {moduleConfig.showDivider && index !== educationDetails.length - 1 && <Divider sx={{ my: 1 }} />}
         </Box>
       ))}
     </Box>

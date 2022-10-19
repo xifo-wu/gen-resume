@@ -104,7 +104,7 @@ export default function ChooseResumeModuleModal(props: ChooseResumeModuleModalPr
 
         <DialogContent>
           <Grid container spacing={2}>
-            {modules.map((item) => (
+            {modules.filter(i => i.id !== 'resumeBasic').map((item) => (
               <Grid key={item.id} item md={4} xs={12} sm={6}>
                 <ChooseModuleItemCard
                   selected={selected === item.id}

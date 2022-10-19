@@ -23,11 +23,12 @@ import { moduleMap } from '@/components/Resume/modules';
 
 interface ModuleItemCardProps {
   item: ModuleMapKeys;
+  disableReorder?: boolean;
   onEditClick: (item: ModuleMapKeys) => void;
 }
 
 const ModuleItemCard = (props: ModuleItemCardProps) => {
-  const { item, onEditClick } = props;
+  const { item, onEditClick, disableReorder } = props;
   const y = useMotionValue(0);
   const boxShadow = useRaisedShadow(y);
   const controls = useDragControls();
@@ -35,6 +36,29 @@ const ModuleItemCard = (props: ModuleItemCardProps) => {
 
   const handleEditClick = () => {
     onEditClick(item);
+  };
+
+  const Card = () => (
+    <Box sx={styles.container}>
+      <Box sx={styles.editBox} onClick={handleEditClick}>
+        <EditOutlinedIcon sx={styles.editIcon} />
+      </Box>
+      <Box sx={styles.titleBox}>
+        <Typography sx={styles.enTitle}>{data.en}</Typography>
+        <Typography variant="h5" sx={styles.title}>
+          {data.name}
+        </Typography>
+      </Box>
+      {!disableReorder && (
+        <Box sx={styles.grabBox} onPointerDown={(e) => controls.start(e)}>
+          <DragIndicatorIcon sx={styles.grabIcon} />
+        </Box>
+      )}
+    </Box>
+  );
+
+  if (disableReorder) {
+    return <Card />;
   }
 
   return (
@@ -45,20 +69,7 @@ const ModuleItemCard = (props: ModuleItemCardProps) => {
       dragControls={controls}
       style={{ boxShadow, y }}
     >
-      <Box sx={styles.container}>
-        <Box sx={styles.editBox} onClick={handleEditClick}>
-          <EditOutlinedIcon sx={styles.editIcon} />
-        </Box>
-        <Box sx={styles.titleBox}>
-          <Typography sx={styles.enTitle}>{data.en}</Typography>
-          <Typography variant="h5" sx={styles.title}>
-            {data.name}
-          </Typography>
-        </Box>
-        <Box sx={styles.grabBox} onPointerDown={(e) => controls.start(e)}>
-          <DragIndicatorIcon sx={styles.grabIcon} />
-        </Box>
-      </Box>
+      <Card />
     </Reorder.Item>
   );
 };
