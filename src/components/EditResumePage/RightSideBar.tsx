@@ -14,8 +14,10 @@ import EducationModalForm from './EducationModalForm';
 import ResumeBasicModalForm from './ResumeBasicModalForm';
 import WorkExperienceModalForm from './WorkExperienceModalForm';
 import ProjectModalForm from './ProjectModalForm';
+import OthersModalForm from './OthersModalForm';
 
 // Hooks
+import { useEffect } from 'react'
 import { useSWRConfig } from 'swr';
 import { useTheme, useMediaQuery } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -33,7 +35,6 @@ const drawerWidth = 240;
 
 interface Props {
   data: any;
-  modules: string;
   drawerOpen?: boolean;
   window?: () => Window;
   drawerToggle?: DrawerProps['onClose'];
@@ -42,20 +43,25 @@ interface Props {
 // 右侧菜单
 // 用于编辑模块、模块排序等
 const RightSideBar = (props: Props) => {
-  const { data, window: windowProps, modules = '', drawerOpen, drawerToggle } = props;
+  const { data, window: windowProps, drawerOpen, drawerToggle } = props;
   const { mutate } = useSWRConfig();
 
   const theme = useTheme();
   const router = useRouter();
   const { query } = router;
-  const [reordered, setReordered] = React.useState(modules);
+  const [reordered, setReordered] = React.useState(data.moduleOrder);
   const [debouncedReordered, setDebouncedReordered] = React.useState('');
+
+  useEffect(() => {
+    setReordered(data.moduleOrder)
+  }, [data.moduleOrder])
 
   // Modal 框相关 State
   const [resumeBasicOpen, setResumeBasicOpen] = React.useState(false);
   const [educationOpen, setEducationOpen] = React.useState(false);
   const [workExperienceOpen, setWorkExperienceOpen] = React.useState(false);
   const [projectOpen, setProjectOpen] = React.useState(false);
+  const [othersOpen, setOthersOpen] = React.useState(false);
 
   const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
   const container = windowProps !== undefined ? () => windowProps().document.body : undefined;
@@ -115,6 +121,11 @@ const RightSideBar = (props: Props) => {
 
     if (item === 'project') {
       setProjectOpen(true);
+      return;
+    }
+
+    if (item === 'others') {
+      setOthersOpen(true);
       return;
     }
   };
@@ -186,6 +197,20 @@ const RightSideBar = (props: Props) => {
   };
   // #endregion
 
+  const handleOthersOpenSubmit = async (values: any) => {
+    const { error } = await apiPut<any, any>({
+      url: `/api/v1/resumes/${query.slug}/update-others`,
+      data: values,
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return false;
+    }
+
+    mutate(`/api/v1/resumes/${query.slug}`);
+    return true;
+  };
 
   const drawer = (
     <Box sx={styles.modulesBox}>
@@ -194,7 +219,7 @@ const RightSideBar = (props: Props) => {
       </Box>
       <Reorder.Group axis="y" onReorder={handleReorder} values={reordered.split(',')}>
         {_.map(
-          reordered.split(',').filter((i) => i !== 'resumeBasic'),
+          reordered.split(',').filter((i: string) => i !== 'resumeBasic'),
           (item: ModuleMapKeys) => (
             <ModuleItemCard onEditClick={handleEditClick} key={item} item={item} />
           ),
@@ -248,6 +273,14 @@ const RightSideBar = (props: Props) => {
         open={projectOpen}
         onChange={setProjectOpen}
         onSubmit={handleProjectOpenSubmit}
+      />
+
+      <OthersModalForm
+        ignoreTrigger
+        initData={data.others || []}
+        open={othersOpen}
+        onChange={setOthersOpen}
+        onSubmit={handleOthersOpenSubmit}
       />
     </Box>
   );

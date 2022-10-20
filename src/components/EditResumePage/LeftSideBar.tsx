@@ -63,6 +63,10 @@ const LeftSideBar = (props: Props) => {
       url = `/api/v1/resumes/${query.slug}/add-project`;
     }
 
+    if (value === 'others') {
+      url = `/api/v1/resumes/${query.slug}/add-other`;
+    }
+
     if (!url) return false;
 
     const { error } = await apiPut<any, any>({

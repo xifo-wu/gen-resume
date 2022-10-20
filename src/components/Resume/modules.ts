@@ -19,8 +19,8 @@ export const moduleMap = {
     name: '项目经历',
     en: 'Project',
   },
-  other: {
-    id: 'other',
+  others: {
+    id: 'others',
     name: '其他自定义',
     en: 'Other Custom'
   }
@@ -43,7 +43,7 @@ const modules = [
   moduleMap.workExperience,
   moduleMap.education,
   moduleMap.project,
-  moduleMap.other,
+  moduleMap.others,
   // moduleMap.skill,
   // moduleMap.certificate,
 ];

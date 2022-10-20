@@ -10,6 +10,9 @@ import WorkExperienceContent1Preview from './WorkExperience/Content1/preview';
 import WorkExperienceContent2Preview from './WorkExperience/Content2/preview';
 import ProjectContent1Preview from './Project/Content1/preview';
 import ProjectContent2Preview from './Project/Content2/preview';
+import OtherContent1 from './Other/Content1';
+import OtherContent1Preview from './Other/Content1/preview';
+
 
 export type ContentType = {
   id: string;
@@ -62,6 +65,17 @@ export const projectMap: Record<string, ContentType> = {
 }
 // #endregion
 
+// #region 其他模块
+export const otherMap: Record<string, ContentType> = {
+  other1: {
+    id: 'other1',
+    preview: OtherContent1Preview,
+    component: OtherContent1,
+  },
+}
+
+// #endregion
+
 export type EducationMapKeys = keyof typeof educationMap;
 
 export type ContentMapKeys = EducationMapKeys;
@@ -71,6 +85,7 @@ const contentMap: Record<ContentMapKeys, ContentType> = {
   ...educationMap,
   ...workExperienceMap,
   ...projectMap,
+  ...otherMap,
 };
 
 export default contentMap;

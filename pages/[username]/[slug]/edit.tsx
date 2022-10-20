@@ -72,7 +72,6 @@ const EditResumePage = (props: DashboardLayoutProps) => {
         data={data}
         drawerOpen={rightDrawerOpened}
         drawerToggle={handleRightDrawerToggle}
-        modules={data.moduleOrder}
       />
 
       <TransformWrapper

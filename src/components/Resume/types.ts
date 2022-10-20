@@ -41,9 +41,11 @@ export interface ResumeType {
   education: Education;
   config: ResumeConfig;
   workExperience: WorkExperience;
+  others: Other[];
+  project: Project;
 }
 
-export type ModulesKey = 'education' | 'workExperience';
+export type ModulesKey = 'education' | 'workExperience' | 'project' | 'others';
 
 export interface ModuleBase {
   id: string | number;
@@ -103,5 +105,12 @@ export interface ProjectDetail {
 
 export interface Project extends ModuleBase {
   projectDetails: ProjectDetail[];
+}
+// #endregion
+
+// #region 其他自定义模块
+export interface Other extends ModuleBase {
+  desc?: string;
+  sortIndex: number;
 }
 // #endregion

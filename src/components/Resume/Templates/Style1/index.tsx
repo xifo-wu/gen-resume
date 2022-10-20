@@ -44,6 +44,29 @@ const Style1 = (props: Style1Props) => {
 
       <Box sx={{ mt: 4 }}>
         {_.map(moduleItems, (item, key) => {
+          // item 可能为数据情况，例如其他。
+          if (Array.isArray(item)) {
+            return _.sortBy(item, ['sortIndex']).map(itemDetail => {
+              const ModuleTitle = moduleTitleMap[itemDetail.moduleTitleType as ModuleTitles];
+              const ContentComponent = contentMap[itemDetail.contentType].component;
+              return (
+                <Box
+                  key={`${itemDetail.contentType}-${itemDetail.id}`}
+                  sx={{
+                    display: itemDetail.visible ? 'block' : 'none',
+                    my: 1,
+                  }}
+                >
+                  <ModuleTitle data={itemDetail} />
+                  <Box sx={{ px: 3, my: 2 }}>
+                    <ContentComponent data={itemDetail} />
+                  </Box>
+                </Box>
+              );
+            })
+          }
+
+
           const ModuleTitle = moduleTitleMap[item.moduleTitleType as ModuleTitles];
           const ContentComponent = contentMap[item.contentType].component;
 
