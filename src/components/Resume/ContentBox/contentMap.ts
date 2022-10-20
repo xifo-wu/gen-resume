@@ -19,12 +19,12 @@ export type ContentType = {
 
 // #region 教育经历模块
 export const educationMap: Record<string, ContentType> = {
-  educationContent1: {
+  education1: {
     id: 'educationContent1',
     preview: EducationContent1Preview,
     component: EducationContent1,
   },
-  educationContent2: {
+  education2: {
     id: 'educationContent2',
     preview: EducationContent2Preview,
     component: EducationContent2,

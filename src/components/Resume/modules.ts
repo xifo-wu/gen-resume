@@ -19,16 +19,21 @@ export const moduleMap = {
     name: '项目经历',
     en: 'Project',
   },
-  skill: {
-    id: 'skill',
-    name: '专业技能',
-    en: 'Professional Skills',
-  },
-  certificate: {
-    id: 'certificate',
-    name: '技能证书',
-    en: 'Skill Certificates',
-  },
+  other: {
+    id: 'other',
+    name: '其他自定义',
+    en: 'Other Custom'
+  }
+  // skill: {
+  //   id: 'skill',
+  //   name: '专业技能',
+  //   en: 'Professional Skill',
+  // },
+  // certificate: {
+  //   id: 'certificate',
+  //   name: '技能证书',
+  //   en: 'Skill Certificate',
+  // },
 };
 
 export type ModuleMapKeys = keyof typeof moduleMap
@@ -38,8 +43,9 @@ const modules = [
   moduleMap.workExperience,
   moduleMap.education,
   moduleMap.project,
-  moduleMap.skill,
-  moduleMap.certificate,
+  moduleMap.other,
+  // moduleMap.skill,
+  // moduleMap.certificate,
 ];
 
 export default modules;

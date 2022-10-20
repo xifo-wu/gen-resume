@@ -10,6 +10,9 @@ import MenuList from '../MenuList';
 import LogoSection from '../LogoSection';
 import ChooseResumeModuleModal from './ChooseResumeModuleModal';
 
+// Hooks
+import { useSWRConfig } from 'swr';
+
 // types
 import type { DrawerProps } from '@mui/material';
 import type { MenuItem } from '../MenuList';
@@ -31,6 +34,7 @@ interface Props {
 // 用于选择模版、添加模块等
 const LeftSideBar = (props: Props) => {
   const { window, drawerOpen, drawerToggle } = props;
+  const { mutate } = useSWRConfig();
   const router = useRouter();
   const { query } = router;
   const theme = useTheme();
@@ -70,6 +74,7 @@ const LeftSideBar = (props: Props) => {
       return false;
     }
 
+    mutate(`/api/v1/resumes/${query.slug}`);
     return true;
   };
   // #endregion
