@@ -1,3 +1,6 @@
+import { grey } from '@mui/material/colors';
+
+// Types
 import type { Theme } from '@mui/material';
 
 export default {
@@ -26,10 +29,18 @@ export default {
     mx: 'auto',
   },
   menuContainer: {
-    // pt: {
-    //   md: 2,
-    //   xs: 1,
-    // },
+    flex: 1,
     px: 2,
-  }
+  },
+  // 版本样式
+  version: {
+    textAlign: 'center',
+    m: 2,
+    fontWeight: 600,
+    fontSize: '1.125rem',
+  },
+  versionLabel: {
+    color: grey[500],
+    fontSize: '0.875rem',
+  },
 };

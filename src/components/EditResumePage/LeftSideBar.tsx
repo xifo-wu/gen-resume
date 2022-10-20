@@ -84,6 +84,12 @@ const LeftSideBar = (props: Props) => {
       <Box sx={styles.menuContainer}>
         <MenuList onMenuClick={handleMenuClick} />
       </Box>
+      {process.env.NEXT_PUBLIC_VERSION && (
+          <Box sx={styles.version}>
+            <Box sx={styles.versionLabel}>version</Box>
+            {process.env.NEXT_PUBLIC_VERSION}
+          </Box>
+        )}
     </>
   );
 
