@@ -27,6 +27,8 @@ const Style1 = (props: Style1Props) => {
   const { resumeBasic, config, moduleOrder } = data;
   const moduleItems = buildModuleItems(data, moduleOrder);
 
+  console.log(moduleItems, moduleOrder)
+
   return (
     <Box
       sx={{
@@ -47,7 +49,7 @@ const Style1 = (props: Style1Props) => {
 
           return (
             <Box
-              key={item.id}
+              key={`${item.contentType}-${item.id}`}
               sx={{
                 display: item.visible ? 'block' : 'none',
                 my: 1,

@@ -13,6 +13,7 @@ import ModuleItemCard from './ModuleItemCard';
 import EducationModalForm from './EducationModalForm';
 import ResumeBasicModalForm from './ResumeBasicModalForm';
 import WorkExperienceModalForm from './WorkExperienceModalForm';
+import ProjectModalForm from './ProjectModalForm';
 
 // Hooks
 import { useSWRConfig } from 'swr';
@@ -54,30 +55,36 @@ const RightSideBar = (props: Props) => {
   const [resumeBasicOpen, setResumeBasicOpen] = React.useState(false);
   const [educationOpen, setEducationOpen] = React.useState(false);
   const [workExperienceOpen, setWorkExperienceOpen] = React.useState(false);
+  const [projectOpen, setProjectOpen] = React.useState(false);
 
   const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
   const container = windowProps !== undefined ? () => windowProps().document.body : undefined;
 
   useDebounce(
     () => {
-      const reorderFunc = async () => {
-        const { error } = await apiPut<any, any>({
-          url: `/api/v1/resumes/${query.slug}`,
-          data: {
-            moduleOrder: reordered,
-          },
-        });
-
-        if (error) {
-          toast.error(error.message);
-          return;
-        }
-
-        mutate(`/api/v1/resumes/${query.slug}`);
-      };
-
       if (debouncedReordered) {
-        reorderFunc();
+        mutate(`/api/v1/resumes/${query.slug}`, async (mutateData: any) => {
+          const { data, error } = await apiPut<any, any>({
+            url: `/api/v1/resumes/${query.slug}`,
+            data: {
+              moduleOrder: reordered,
+            },
+          });
+
+          if (error) {
+            toast.error(error.message);
+            return mutateData;
+          }
+
+          return {
+            ...mutateData,
+            data,
+          }
+        }, {
+          // API 已经给我们提供了更新的信息，
+          // 所以我们不需要在这里重新请求。
+          revalidate: false
+        })
       }
 
       setDebouncedReordered(reordered);
@@ -103,6 +110,11 @@ const RightSideBar = (props: Props) => {
 
     if (item === 'workExperience') {
       setWorkExperienceOpen(true);
+      return;
+    }
+
+    if (item === 'project') {
+      setProjectOpen(true);
       return;
     }
   };
@@ -157,6 +169,24 @@ const RightSideBar = (props: Props) => {
     return true;
   };
 
+  // #region 提交项目经历
+  const handleProjectOpenSubmit = async (values: any) => {
+    const { error } = await apiPut<any, any>({
+      url: `/api/v1/resumes/${query.slug}/update-project`,
+      data: values,
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return false;
+    }
+
+    mutate(`/api/v1/resumes/${query.slug}`);
+    return true;
+  };
+  // #endregion
+
+
   const drawer = (
     <Box sx={styles.modulesBox}>
       <Box sx={{ mb: 1.5 }}>
@@ -210,6 +240,14 @@ const RightSideBar = (props: Props) => {
         open={workExperienceOpen}
         onChange={setWorkExperienceOpen}
         onSubmit={handleWorkExperienceOpenSubmit}
+      />
+
+      <ProjectModalForm
+        ignoreTrigger
+        initData={data.project || {}}
+        open={projectOpen}
+        onChange={setProjectOpen}
+        onSubmit={handleProjectOpenSubmit}
       />
     </Box>
   );

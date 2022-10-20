@@ -42,12 +42,6 @@ const EditResumePage = (props: DashboardLayoutProps) => {
   const router = useRouter();
   const { query } = router;
   const { data = {}, loading } = useApi(query.slug ? `/api/v1/resumes/${query.slug}` : null);
-  // const [data, setData] = useState(fakeData);
-
-  // 已经添加的模块(排序后)
-  // const addedModules = data.moduleOrder ? data.moduleOrder.split(',') : [];
-
-  // console.log('请求来的', data);
 
   if (loading) {
     return <FullPageLoading loading={loading} />;

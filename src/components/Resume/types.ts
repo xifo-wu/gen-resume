@@ -86,8 +86,22 @@ export interface WorkExperienceDetail {
   jobTitle?: string;
 }
 export interface WorkExperience extends ModuleBase {
-  workExperienceDetails: WorkExperienceDetail[]
+  workExperienceDetails: WorkExperienceDetail[];
 }
 // #endregion
 
+// #region 项目经历类型
+export interface ProjectDetail {
+  desc?: string;
+  endOn: string | null;
+  startOn: string | null;
+  id?: number;
+  name?: string;
+  role?: string;
+  sortIndex: number;
+}
 
+export interface Project extends ModuleBase {
+  projectDetails: ProjectDetail[];
+}
+// #endregion

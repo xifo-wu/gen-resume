@@ -14,18 +14,18 @@ export const moduleMap = {
     name: '教育经历',
     en: 'Education',
   },
-  projects: {
-    id: 'projects',
+  project: {
+    id: 'project',
     name: '项目经历',
-    en: 'Projects',
+    en: 'Project',
   },
-  skills: {
-    id: 'skills',
+  skill: {
+    id: 'skill',
     name: '专业技能',
     en: 'Professional Skills',
   },
-  certificates: {
-    id: 'certificates',
+  certificate: {
+    id: 'certificate',
     name: '技能证书',
     en: 'Skill Certificates',
   },
@@ -37,9 +37,9 @@ const modules = [
   moduleMap.resumeBasic,
   moduleMap.workExperience,
   moduleMap.education,
-  moduleMap.projects,
-  moduleMap.skills,
-  moduleMap.certificates,
+  moduleMap.project,
+  moduleMap.skill,
+  moduleMap.certificate,
 ];
 
 export default modules;
