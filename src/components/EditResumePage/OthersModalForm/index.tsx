@@ -160,7 +160,7 @@ export default function OtherModalForm(props: OtherModalFormProps) {
         })}
 
       <Dialog fullWidth maxWidth="lg" fullScreen={fullScreen} open={open} onClose={handleClose}>
-        <DialogTitle id="responsive-dialog-title">项目经历</DialogTitle>
+        <DialogTitle id="responsive-dialog-title">自定义模块</DialogTitle>
         <DialogContent>
           <Box
             component="form"

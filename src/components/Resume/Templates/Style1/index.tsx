@@ -56,6 +56,7 @@ const Style1 = (props: Style1Props) => {
               return _.sortBy(item, ['sortIndex']).map((itemDetail) => {
                 const ModuleTitle = moduleTitleMap[itemDetail.moduleTitleType as ModuleTitles];
                 const ContentComponent = contentMap[itemDetail.contentType].component;
+
                 return (
                   <Box
                     key={`${itemDetail.contentType}-${itemDetail.id}`}
