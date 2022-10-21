@@ -6,9 +6,12 @@ import { useTheme, useMediaQuery } from '@mui/material';
 // components
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
+
+// Project Components
 import MenuList from '../MenuList';
 import LogoSection from '../LogoSection';
 import ChooseResumeModuleModal from './ChooseResumeModuleModal';
+import ChooseResumeTemplatesModal from './ChooseResumeTemplatesModal';
 
 // Hooks
 import { useSWRConfig } from 'swr';
@@ -40,11 +43,18 @@ const LeftSideBar = (props: Props) => {
   const theme = useTheme();
   const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
   const [resumeModuleOpen, setResumeModuleOpen] = useState(false);
+  const [resumeTemplatesOpen, setResumeTemplatesOpen] = useState(false);
   const container = window !== undefined ? () => window().document.body : undefined;
 
   const handleMenuClick = (key: string, item: MenuItem) => {
     if (key === 'resumeModules') {
       setResumeModuleOpen(true);
+      return;
+    }
+
+    if (key === 'resumeTemplates') {
+      setResumeTemplatesOpen(true);
+      return;
     }
   };
 
@@ -82,6 +92,24 @@ const LeftSideBar = (props: Props) => {
     return true;
   };
   // #endregion
+
+  // 选择模版
+  const handleChooseResumeTemplates = async (value: string) => {
+    const { error } = await apiPut<any, any>({
+      url: `/api/v1/resumes/${query.slug}`,
+      data: {
+        layoutType: value,
+      },
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return false;
+    }
+
+    mutate(`/api/v1/resumes/${query.slug}`)
+    return true;
+  };
 
   const drawer = (
     <>
@@ -123,6 +151,14 @@ const LeftSideBar = (props: Props) => {
         open={resumeModuleOpen}
         onChange={setResumeModuleOpen}
       />
+
+      <ChooseResumeTemplatesModal
+        ignoreTrigger
+        onSubmit={handleChooseResumeTemplates}
+        open={resumeTemplatesOpen}
+        onChange={setResumeTemplatesOpen}
+      />
+
     </Box>
   );
 };
