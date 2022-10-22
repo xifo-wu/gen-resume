@@ -58,7 +58,7 @@ export default function ProjectModalForm(props: ProjectModalFormProps) {
   const {
     control,
     watch,
-    register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<Project>({
@@ -67,6 +67,13 @@ export default function ProjectModalForm(props: ProjectModalFormProps) {
       projectDetails: _.sortBy(initData.projectDetails, ['sortIndex'])
     },
   });
+
+  React.useEffect(() => {
+    reset({
+      ...initData,
+      projectDetails: _.sortBy(initData.projectDetails, ['sortIndex'])
+    })
+  }, [initData])
 
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
     control,

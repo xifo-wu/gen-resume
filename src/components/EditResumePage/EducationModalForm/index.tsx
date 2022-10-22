@@ -76,7 +76,7 @@ export default function EducationModalForm(props: EducationModalFormProps) {
   const {
     control,
     watch,
-    register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<EducationData>({
@@ -85,6 +85,13 @@ export default function EducationModalForm(props: EducationModalFormProps) {
       educationDetails: _.sortBy(initData.educationDetails, ['sortIndex'])
     },
   });
+
+  React.useEffect(() => {
+    reset({
+      ...initData,
+      educationDetails: _.sortBy(initData.educationDetails, ['sortIndex'])
+    })
+  }, [initData])
 
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
     control,

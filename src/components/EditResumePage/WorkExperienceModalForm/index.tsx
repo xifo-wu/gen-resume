@@ -75,7 +75,7 @@ export default function WorkExperienceModalForm(props: WorkExperienceModalFormPr
   const {
     control,
     watch,
-    register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<WorkExperienceData>({
@@ -84,6 +84,13 @@ export default function WorkExperienceModalForm(props: WorkExperienceModalFormPr
       workExperienceDetails: _.sortBy(initData.workExperienceDetails, ['sortIndex'])
     },
   });
+
+  React.useEffect(() => {
+    reset({
+      ...initData,
+      workExperienceDetails: _.sortBy(initData.workExperienceDetails, ['sortIndex'])
+    })
+  }, [initData])
 
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
     control,

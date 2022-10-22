@@ -86,10 +86,15 @@ export default function ResumeBasicModalForm(props: ResumeBasicModalFormProps) {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ResumeBasicData>({
     defaultValues: initData,
   });
+
+  React.useEffect(() => {
+    reset(initData)
+  }, [initData])
 
   const handleClickOpen = () => {
     setOpen(true);

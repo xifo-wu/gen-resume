@@ -62,7 +62,7 @@ export default function OtherModalForm(props: OtherModalFormProps) {
   const {
     control,
     watch,
-    register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<OtherForm>({
@@ -70,6 +70,13 @@ export default function OtherModalForm(props: OtherModalFormProps) {
       others: _.sortBy(initData, ['sortIndex']),
     },
   });
+
+  React.useEffect(() => {
+    reset({
+      ...initData,
+      others: _.sortBy(initData, ['sortIndex']),
+    })
+  }, [initData])
 
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
     control,
