@@ -96,7 +96,7 @@ const LeftSideBar = (props: Props) => {
   // 选择模版
   const handleChooseResumeTemplates = async (value: string) => {
     const { error } = await apiPut<any, any>({
-      url: `/api/v1/resumes/${query.slug}`,
+      url: `/api/v1/resumes/${query.slug}/update-resume-layout-type`,
       data: {
         layoutType: value,
       },

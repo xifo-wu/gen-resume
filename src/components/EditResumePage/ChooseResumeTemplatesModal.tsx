@@ -41,7 +41,7 @@ const templates = [
   {
     id: '2',
     key: 'style2',
-    cover: 'https://s1.ax1x.com/2022/10/21/x6OYa4.jpg',
+    cover: 'https://s1.ax1x.com/2022/10/22/xcyYx1.jpg',
     name: '不会取名字',
   },
 ];
@@ -59,7 +59,7 @@ const TemplateCard = ({ data, selected, ...rest }: TemplateCardProps) => {
   return (
     <Card
       sx={(theme) => ({
-        ...(selected && { border: `1px solid ${theme.palette.primary.main}` }),
+        border: `1px solid ${selected? theme.palette.primary.main : 'transparent'}`,
         maxWidth: 345,
       })}
       {...rest}

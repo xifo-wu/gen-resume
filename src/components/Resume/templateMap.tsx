@@ -17,13 +17,13 @@ const templateMap: Record<string, TemplateType> = {
   style1: {
     id: 'style1',
     preview:
-      'https://images.unsplash.com/photo-1661899068878-f1dcd63c56e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDEyfGJvOGpRS1RhRTBZfHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
+      'https://s1.ax1x.com/2022/10/21/x6Wl7V.jpg',
     component: Style1,
   },
   style2: {
     id: 'style2',
     preview:
-      'https://images.unsplash.com/photo-1661870467713-1047a3e1f283?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDE0fGJvOGpRS1RhRTBZfHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
+      'https://s1.ax1x.com/2022/10/22/xcyYx1.jpg',
     component: Style2,
   },
 };
