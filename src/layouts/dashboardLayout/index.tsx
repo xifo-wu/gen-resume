@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import type { ReactElement } from 'react';;
 import { Box, Container } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -16,22 +16,9 @@ const DashboardLayout = (props: DashboardLayoutProps) => {
   const router = useRouter();
   const { loading, user } = useUser();
 
-  const toastConfig = useMemo(
-    () => ({
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    }),
-    [],
-  );
-
   useEffect(() => {
     if (!(user || loading)) {
-      toast.error('登录失效，请重新登录', toastConfig);
+      toast.error('登录失效，请重新登录');
       void router.push('/login');
     }
   }, [loading, user]);
@@ -40,6 +27,7 @@ const DashboardLayout = (props: DashboardLayoutProps) => {
     <Box sx={styles.layoutSX}>
       <FullPageLoading loading={loading} />
       <Container
+        maxWidth="xl"
         sx={{
           transition:
             'margin-left 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, margin-right 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',

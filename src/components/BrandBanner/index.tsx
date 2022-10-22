@@ -24,7 +24,7 @@ const BrandBanner = () => {
             &nbsp;快速制作简历
           </H1>
           <Typography variant="body1" sx={{ my: 4, color: '#d2d2d2' }}>
-            海量简历模版随意选择、隐私数据加密，保护你的隐私。用爱发电，拿起你的小手 Star 一下
+            简历在线生成即时预览，海量简历模版随意选择。不定期新增模版。
           </Typography>
 
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
