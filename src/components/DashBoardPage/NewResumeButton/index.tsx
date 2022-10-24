@@ -6,6 +6,7 @@ import NewResumeModalForm, { NewResumeFormData } from '../NewResumeModalForm';
 import api, { apiPost } from '@/api';
 import { toast } from 'react-toastify';
 import { templateLayoutTypes } from '@/components/Resume/templateMap';
+import { useSWRConfig } from 'swr';
 
 interface Result {
   success: true;
@@ -37,6 +38,8 @@ const NewResumeButtonBase = styled(ButtonBase)(({ theme }) => ({
 }));
 
 const NewResumeButton = () => {
+  const { mutate } = useSWRConfig();
+
   const handleSubmit = async (payload: NewResumeFormData) => {
     const { data, error } = await apiPost({
       url: '/api/v1/resumes',
@@ -44,17 +47,15 @@ const NewResumeButton = () => {
         ...payload,
         layoutType: templateLayoutTypes[0],
       },
-    })
+    });
 
     if (error) {
       toast.error(error.message);
       return false;
     }
 
-
-    console.log(data, error)
-
-    toast.success('创建成功',);
+    mutate('/api/v1/resumes');
+    toast.success('创建成功');
     return true;
   };
 

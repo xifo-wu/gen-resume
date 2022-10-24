@@ -13,7 +13,7 @@ const data = [
     value: templateLayoutCount,
   },
   {
-    key: 'resumeTemplatesCount',
+    key: 'userCount',
     title: '用户数',
     value: '**',
   },
@@ -23,7 +23,7 @@ const StatsSection = () => {
   // TODO 使用真实数据
   return (
     <Container sx={{ textAlign: 'center', my: 4, }}>
-      <Grid container sx={{ margin: '0 auto' }} lg={9} xs={12}>
+      <Grid container item sx={{ margin: '0 auto' }} lg={9} xs={12}>
         {data.map((item) => (
           <Grid key={item.key} item xs={12} md={4}>
             <Box
