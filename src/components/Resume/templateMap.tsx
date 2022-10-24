@@ -29,5 +29,8 @@ const templateMap: Record<string, TemplateType> = {
 };
 
 export const templateLayoutTypes = _.map(templateMap, (item) => item.id)
+export const templateLayoutCount = _.reduce(templateMap, (prev) => {
+  return prev + 1
+}, 0)
 
 export default templateMap;

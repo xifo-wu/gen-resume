@@ -1,6 +1,6 @@
-import { Grid, Box, Container, Paper, PaperProps, styled, Typography } from '@mui/material';
+import { Grid, Box, Container, Paper, Typography } from '@mui/material';
 import CodeIcon from '@mui/icons-material/Code';
-import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 
 const bsx = {
@@ -30,7 +30,6 @@ const HomePageFeatures = () => {
     <Box
       sx={(theme) => ({
         zIndex: 99,
-        background: theme.palette.background.default,
         pb: 10,
       })}
     >
@@ -103,7 +102,7 @@ const HomePageFeatures = () => {
                     filter: 'drop-shadow(2px 2px 2px rgba(0, 171, 85, 0.48))',
                   }}
                 >
-                  <VerifiedUserOutlinedIcon sx={{ fontSize: 48, color: 'rgb(0, 171, 85)' }} />
+                  <AutoFixHighIcon sx={{ fontSize: 48, color: 'rgb(0, 171, 85)' }} />
                 </Box>
                 <Typography
                   variant="h5"
@@ -115,7 +114,7 @@ const HomePageFeatures = () => {
                     marginBottom: 2,
                   }}
                 >
-                  注重隐私
+                  自定义
                 </Typography>
                 <Typography
                   variant="body1"
@@ -127,7 +126,7 @@ const HomePageFeatures = () => {
                     color: '#637381',
                   }}
                 >
-                  隐私保护，数据库内隐私信息通通加密。还是担心？系统代码开源，易部署。
+                  支持自定义主题颜色、自定义模块标题
                 </Typography>
               </Paper>
             </Grid>

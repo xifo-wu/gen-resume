@@ -1,19 +1,23 @@
+import { Box } from '@mui/material';
 import type { NextPage } from 'next';
-import Box from '@mui/material/Box';
-import BrandBanner from '@/components/BrandBanner';
-import BlankFullScreen from '@/components/BlankFullScreen';
+
 import HomePageFeatures from '@/components/HomePage/Features';
 import HomePageIssues from '@/components/HomePage/Issues';
-import NavBar from '@/components/NavBar';
+import HomePageNavBar from '@/components/HomePage/NavBar';
+import HomePageBanner from '@/components/HomePage/Banner';
+import HomePagePaperContent from '@/components/HomePage/PagePaperContent';
+import HomePageStatsSection from '@/components/HomePage/StatsSection';
 
 const Home: NextPage = () => {
   return (
     <Box>
-      <NavBar />
-      <BrandBanner />
-      <BlankFullScreen />
-      <HomePageFeatures />
-      <HomePageIssues />
+      <HomePageNavBar />
+      <HomePageBanner />
+      <HomePagePaperContent>
+        <HomePageStatsSection />
+        <HomePageFeatures />
+        <HomePageIssues />
+      </HomePagePaperContent>
     </Box>
   );
 };

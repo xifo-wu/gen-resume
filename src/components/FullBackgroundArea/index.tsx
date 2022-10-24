@@ -7,7 +7,7 @@ export interface FullBackgroundAreaProps extends BoxProps {
 
 const FullBackgroundArea = ({ src, sx }: FullBackgroundAreaProps) => {
   return (
-    <Box sx={{ ...styles.containerSX, ...sx }}>
+    <Box sx={(theme) => styles.containerSX(theme, sx)}>
       <Box sx={() => styles.backgroundBoxSX(src)} />
       <Box className="overlay-bottom" sx={styles.overlayBottomSX} />
     </Box>

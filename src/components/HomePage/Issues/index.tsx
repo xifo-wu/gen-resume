@@ -53,7 +53,7 @@ const Issues = () => {
 
         <Box sx={{ textAlign: 'center' }}>
           <Typography variant="body1">
-            可以使用 GitHub Issues 来反馈问题，欢迎提交 Bug、简历模版样式以及意见
+            欢迎反馈问题,提交 Bug、简历模版样式以及意见,期待你提供的精彩简历排版
           </Typography>
           <Button
             variant="contained"
@@ -62,6 +62,7 @@ const Issues = () => {
               mt: 4,
               boxShadow: 'rgba(32, 101, 209, 0.24) 0px 8px 16px 0px',
             }}
+            disabled
           >
             提交反馈
           </Button>
