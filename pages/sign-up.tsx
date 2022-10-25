@@ -1,4 +1,4 @@
-import { ReactElement, useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import router from 'next/router';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import Link from '@/Link';
 import { apiPost } from '@/api';
-import SimpleAppBarLayout from '@/layouts/SimpleAppBarLayout';
 import Container from '@/components/SignUpPage/Container';
 import ContentContainer from '@/components/SignUpPage/ContentContainer';
 import Form from '@/components/Form';
@@ -18,7 +17,6 @@ import Title from '@/components/SignUpPage/Title';
 import PasswordField from '@/components/Form/PasswordField';
 import { emailRegex } from '@/enums/const';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 interface FormData {
   email: string;
@@ -168,7 +166,7 @@ const SignUp = () => {
               </Link>
             </SubTitle>
             <Form onSubmit={handleSubmit(onSubmit)} sx={{ mt: 4 }}>
-              <InputField<FormData>
+              <InputField
                 name="email"
                 control={control}
                 errors={errors}
@@ -262,10 +260,6 @@ const SignUp = () => {
       </Grid>
     </Container>
   );
-};
-
-SignUp.getLayout = function getLayout(page: ReactElement) {
-  return <SimpleAppBarLayout titleColor="#fff">{page}</SimpleAppBarLayout>;
 };
 
 export default SignUp;

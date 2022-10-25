@@ -37,7 +37,7 @@ async function api<T, R>(config: AxiosRequestConfig<T>): Promise<ReturnType<R>> 
   };
 }
 
-export const apiGet = async <T, R>(config: AxiosRequestConfig<T>): Promise<ReturnType<R>> => {
+export const apiGet = async <T, R = unknown>(config: AxiosRequestConfig<T>): Promise<ReturnType<R>> => {
   try {
     const response = await api<T, R>({
       method: 'GET',
@@ -47,7 +47,7 @@ export const apiGet = async <T, R>(config: AxiosRequestConfig<T>): Promise<Retur
     return response;
   } catch (error) {
     return {
-      data: [] as R,
+      // data: [],
       status: 418,
     };
   }

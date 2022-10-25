@@ -5,7 +5,7 @@ import { Box, Paper, Toolbar, useTheme, useMediaQuery } from '@mui/material';
 
 import _ from 'lodash';
 import templateMap from '@/components/Resume/templateMap';
-import styles from './styles';
+
 
 // Hooks
 import { useRouter } from 'next/router';
@@ -16,6 +16,16 @@ import FullPageLoading from '@/components/FullPageLoading';
 import LeftSideBar from '@/components/EditResumePage/LeftSideBar';
 import RightSideBar from '@/components/EditResumePage/RightSideBar';
 import Header from '@/components/EditResumePage/Header';
+
+import { Theme } from '@mui/material';
+
+const layoutSX = (theme: Theme) => ({
+  height: '100vh',
+  width: '100vw',
+  background: theme.palette.mode === 'dark' ? '#161c24' : '#f5f5f7',
+  display: 'flex',
+});
+
 
 export interface DashboardLayoutProps {
   noPadding?: boolean;
@@ -59,7 +69,7 @@ const EditResumePage = (props: DashboardLayoutProps) => {
   };
 
   return (
-    <Box sx={styles.layoutSX}>
+    <Box sx={layoutSX}>
       <Header
         leftDrawerOpened={leftDrawerOpened}
         rightDrawerOpened={rightDrawerOpened}

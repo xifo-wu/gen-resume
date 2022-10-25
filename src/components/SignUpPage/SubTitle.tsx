@@ -8,10 +8,10 @@ interface SubTitleProps {
 
 const titleSx = (theme: Theme) => ({
   color: theme.palette.mode === 'dark' ? '#f5f5f5' : '#777777',
-  fontSize: 18,
+  fontSize: 16,
   fontWeight: 400,
   m: 0,
-  mb: '0.5rem',
+  mb: '0.375rem',
   [theme.breakpoints.down('sm')]: {
     fontSize: 14,
   },
