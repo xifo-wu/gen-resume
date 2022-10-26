@@ -22,7 +22,7 @@ async function api<T, R>(config: AxiosRequestConfig<T>): Promise<ReturnType<R>> 
   const accessToken = window.localStorage.getItem('accessToken');
 
   const { data, status } = await axios({
-    baseURL,
+    ...(process.env.NODE_ENV !== 'production' && { baseURL }),
     url,
     headers: {
       ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
@@ -37,7 +37,9 @@ async function api<T, R>(config: AxiosRequestConfig<T>): Promise<ReturnType<R>> 
   };
 }
 
-export const apiGet = async <T, R = unknown>(config: AxiosRequestConfig<T>): Promise<ReturnType<R>> => {
+export const apiGet = async <T, R = unknown>(
+  config: AxiosRequestConfig<T>,
+): Promise<ReturnType<R>> => {
   try {
     const response = await api<T, R>({
       method: 'GET',
@@ -114,6 +116,5 @@ export const apiPut = async <T, R extends any>(
     };
   }
 };
-
 
 export default api;
