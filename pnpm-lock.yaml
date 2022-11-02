@@ -13,6 +13,7 @@ specifiers:
   '@types/node': ^18.11.9
   '@types/react': ^18.0.24
   axios: ^0.27.2
+  clsx: ^1.2.1
   dayjs: ^1.11.5
   eslint: ^8.26.0
   eslint-config-next: ^13.0.1
@@ -42,6 +43,7 @@ dependencies:
   '@mui/material': 5.10.12_gs4twfomdgooimayvnfrqgiwam
   '@mui/x-date-pickers': 5.0.6_c625sczzop6jjwsahwv2pqg54q
   axios: 0.27.2
+  clsx: 1.2.1
   dayjs: 1.11.6
   framer-motion: 7.6.4_biqbaboplfbrettd7655fr4n2y
   lodash: 4.17.21
