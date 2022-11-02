@@ -1,6 +1,6 @@
 {
-  "name": "nextjs-with-typescript",
-  "version": "5.0.0",
+  "name": "gen-resume",
+  "version": "0.0.1.beta.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
