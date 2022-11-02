@@ -17,7 +17,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { KVConfig } from '@/components/Resume/types';
 
 interface Props {
-  value: string;
+  value: KVConfig;
   defaultValues?: KVConfig;
   onChange: (v: string) => void;
 }
@@ -32,7 +32,7 @@ const KVConfigField = React.forwardRef<unknown, Props>(function KVConfigField(pr
   const { defaultValues, value: valueProps, onChange } = props;
 
   const { control, watch } = useForm<KVConfig>({
-    defaultValues: valueProps ? _.defaults(JSON.parse(valueProps), defaultValues) : {},
+    defaultValues: valueProps,
   });
 
   React.useEffect(() => {
