@@ -92,6 +92,9 @@ const EditResumePage = (props: DashboardLayoutProps) => {
         centerZoomedOut={false}
         pinch={{ step: 1 }}
         wheel={{ step: 0.1 }}
+        doubleClick={{
+          disabled: true
+        }}
       >
         <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }}>
           <Box
