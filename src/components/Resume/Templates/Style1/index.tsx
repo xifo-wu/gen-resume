@@ -30,8 +30,6 @@ const Style1 = (props: Style1Props) => {
   const theme = useTheme();
   const moduleItems = buildModuleItems(data, moduleOrder);
 
-  console.log(moduleItems, moduleOrder);
-
   return (
     <Box
       sx={{
@@ -95,7 +93,7 @@ const Style1 = (props: Style1Props) => {
         </Box>
       </Box>
 
-      <Box sx={{ width: '100%', height: 32, background: theme.palette.primary.main }} />
+      <Box sx={{ flex: '0 0 32px', width: '100%', background: theme.palette.primary.main }} />
     </Box>
   );
 };

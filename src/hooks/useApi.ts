@@ -17,7 +17,7 @@ const fetcher = (key: string, params: any) =>
  */
 
 const useApi = (key: Key, config?: SWRConfiguration) => {
-  const { data, error } = useSWR(key, fetcher, config);
+  const { data, error, mutate, } = useSWR(key, fetcher, config);
 
   const loading = !error && !data;
   const frontendErrorMessage = { message: '请求出错', success: false };
@@ -25,6 +25,7 @@ const useApi = (key: Key, config?: SWRConfiguration) => {
   if (loading) {
     return {
       loading,
+      mutate,
     }
   }
 
@@ -32,6 +33,7 @@ const useApi = (key: Key, config?: SWRConfiguration) => {
     const { response } = error;
     return {
       loading,
+      mutate,
       error: response.data || frontendErrorMessage,
     };
   }
@@ -39,12 +41,14 @@ const useApi = (key: Key, config?: SWRConfiguration) => {
   const { data: responseData, meta, status } = data;
   if (data.success === false || status >= 400) {
     return {
+      mutate,
       loading,
       error: responseData.data || frontendErrorMessage,
     };
   }
 
   return {
+    mutate,
     loading,
     data: responseData.data,
     meta,
