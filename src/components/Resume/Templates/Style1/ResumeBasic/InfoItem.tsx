@@ -8,35 +8,35 @@ import Link from '@/Link';
 import { useTheme } from '@mui/material';
 
 // Types
-import type { BasicsDataKeys, KVConfig } from '@/components/Resume/types';
+import type { BasicsDataKeys, ResumeBasicField } from '@/components/Resume/types';
 
 interface Props {
-  keyName: BasicsDataKeys;
-  value: string;
-  itemConfig: KVConfig;
+  data: ResumeBasicField & { key: string };
 }
 
-const InfoItem = ({ keyName, value, itemConfig }: Props) => {
+const InfoItem = ({ data }: Props) => {
   const theme = useTheme();
+  const keyName = data.key as BasicsDataKeys;
 
-  if (!itemConfig.visible || !value) return null;
+  // 不可见和值未空时返回空
+  if (!data.visible || !data.value) return null;
 
   const Label = () => {
-    if (!itemConfig.showLabel) return null;
+    if (!data.showLabel) return null;
 
-    return <Box sx={{ mr: 1 }}>{itemConfig.label}</Box>;
+    return <Box sx={{ mr: 1 }}>{data.label}</Box>;
   };
 
   const ValueComponent = () => {
     if (keyName === 'website') {
       return (
-        <Link underline="hover" href={value} target="_blank">
-          {value}
+        <Link underline="hover" href={data.value} target="_blank">
+          {data.value}
         </Link>
       );
     }
 
-    return <Box component="span">{value}</Box>;
+    return <Box component="span">{data.value}</Box>;
   };
 
   return (
@@ -48,7 +48,7 @@ const InfoItem = ({ keyName, value, itemConfig }: Props) => {
         color: theme.palette.grey[800],
       }}
     >
-      <Icon sx={{mr: 1, display: 'block', fontSize: '1rem' }}>{itemConfig.icon}</Icon>
+      <Icon sx={{ mr: 1, display: 'block', fontSize: '1rem' }}>{data.icon}</Icon>
       <Label />
       <ValueComponent />
     </Box>

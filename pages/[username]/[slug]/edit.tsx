@@ -36,6 +36,8 @@ import NavBar from '@/components/NavBar';
 import ChooseResumeTemplate from '@/components/ChooseResumeTemplate';
 import api, { apiPut } from '@/api';
 import { toast } from 'react-toastify';
+import ToolsBar from '@/components/EditResumePage/ToolsBar';
+import ResumeSetting from '@/components/ResumeSetting';
 
 const layoutSX = (theme: Theme) => ({
   height: '100vh',
@@ -57,6 +59,8 @@ const EditResumePage = (props: DashboardLayoutProps) => {
   const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
   // 监听窗口大小是否大于 1200 px
   const matchUpLg = useMediaQuery(theme.breakpoints.up('lg'));
+  // 当前的工具 Tab
+  const [currentTab, setCurrentTab] = useState('chooseResumeTemplate');
   // 控制左侧菜单显示隐藏
   const [leftDrawerOpened, setLeftDrawerOpened] = useState(false);
   // 控制有侧菜单显示隐藏
@@ -118,7 +122,7 @@ const EditResumePage = (props: DashboardLayoutProps) => {
     return (
       <Box sx={{ background: '#f5f5f7', minHeight: '100vh', height: '100%' }}>
         <NavBar />
-        <Container maxWidth="xl" sx={{ pt: 12 }}>
+        <Container maxWidth="xl" sx={{ pt: 12, pb: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs="auto">
               <Box
@@ -137,7 +141,7 @@ const EditResumePage = (props: DashboardLayoutProps) => {
                     overflowY: 'auto',
                     '&::-webkit-scrollbar': {
                       display: 'none',
-                    }
+                    },
                   }}
                 >
                   <ResumeComponent data={data} />
@@ -145,36 +149,21 @@ const EditResumePage = (props: DashboardLayoutProps) => {
               </Box>
             </Grid>
             <Grid item xs>
-              <Box
-                sx={{
-                  display: 'flex',
-                  boxShadow:
-                    'rgba(0, 0, 0, 0.1) 0rem 0.25rem 0.375rem -0.0625rem, rgba(0, 0, 0, 0.06) 0rem 0.125rem 0.25rem -0.0625rem',
-                  backdropFilter: 'saturate(200%) blur(30px)',
-                  background: 'rgba(255, 255, 255, 0.8)',
-                  py: 1,
-                  px: 1,
-                  gap: 1,
-                }}
-              >
-                <Button variant="outlined">选择模版</Button>
-                <Button variant="outlined">模版设置</Button>
-                <Button variant="outlined">添加模块</Button>
-                <Button variant="outlined" startIcon={<PrintIcon />}>
-                  打印预览
-                </Button>
-              </Box>
-
+              <ToolsBar value={currentTab} onChange={setCurrentTab} />
               <Box
                 sx={{
                   p: 1,
                   mt: 2,
                   background: '#fff',
-                  height: `calc(${297 * 0.7}mm - 68.5px)`,
+                  height: `calc(${297 * 0.7}mm - 72px)`,
                   overflowY: 'auto',
                 }}
               >
-                <ChooseResumeTemplate value={data.layoutType} onChange={handleLayoutTypeChange} />
+                {currentTab === 'chooseResumeTemplate' && (
+                  <ChooseResumeTemplate value={data.layoutType} onChange={handleLayoutTypeChange} />
+                )}
+
+                {currentTab === 'resumeSetting' && <ResumeSetting layoutType={data.layoutType} themeColor={data.themeColor} mutate={mutate} />}
               </Box>
             </Grid>
           </Grid>

@@ -13,28 +13,19 @@ import JobTypography from './JobTypography';
 import styles from './indexStyle';
 
 // Types
-import type {
-  BasicsData,
-  BasicsDataKeys,
-  BasicsDataKeysConfig,
-  KVConfig,
-  ResumeConfig,
-} from '@/components/Resume/types';
-import helpers from '@/components/Resume/helpers';
+import type { BasicsData, BasicsDataKeys, ResumeBasicField } from '@/components/Resume/types';
 
 interface ResumeBasicProps {
+  themeColor: string;
   data: BasicsData;
-  config: ResumeConfig;
 }
 
-// ==================================== ResumeBasic ==================================== //
-
 const ResumeBasic = (props: ResumeBasicProps) => {
-  const { data, config } = props;
+  const { data, themeColor } = props;
   if (_.isEmpty(data)) return null;
 
   // 个人基础信息
-  const infoItems = _.pick(data, [
+  const infoItemsObj = _.pick(data, [
     'mobile',
     'email',
     'educationalQualifications',
@@ -43,25 +34,42 @@ const ResumeBasic = (props: ResumeBasicProps) => {
     'age',
   ]);
 
-  const avatarConfig: KVConfig = React.useMemo(() => {
-    return helpers.jsonParse(data.avatarConfig);
-  }, [data.avatarConfig]);
+  const infoItems = _.map(
+    infoItemsObj,
+    (item, key) => ({
+      key,
+      ...item,
+    })
+  );
+
+
+  console.log(infoItems, 'infoItems');
+
+  // const filteredInfoItems = _.filter((item) => item.visible).value();
+  // const infoItems = _.chain(data).pick([
+  //   'mobile',
+  //   'email',
+  //   'educationalQualifications',
+  //   'website',
+  //   'birthday',
+  //   'age',
+  // ]).
 
   return (
     <Box>
-      <Box className="header-box" sx={(theme) => styles.headerBox(theme, config)}>
+      <Box className="header-box" sx={(theme) => styles.headerBox(theme, themeColor)}>
         <Box className="header-content-box" sx={styles.headerContentBox}>
           <Typography className="name" variant="h1" sx={styles.name}>
-            {data.name}
+            {data.name.value}
           </Typography>
-          <JobTypography config={data.jobConfig}>{data.job}</JobTypography>
+          <JobTypography data={data.job} />
         </Box>
 
-        {data.avatar && avatarConfig.visible && (
+        {data.avatar.visible && (
           <Box sx={{ position: 'absolute', top: 16, right: 32, width: '3.5cm', height: '5.2cm' }}>
             <Box
               component="img"
-              src={data.avatar}
+              src={data.avatar.value}
               sx={{
                 objectFit: 'cover',
                 width: '100%',
@@ -74,12 +82,8 @@ const ResumeBasic = (props: ResumeBasicProps) => {
 
       {/* 信息内容的宽度应该是 100% - 左右两边 Padding - 照片宽 - 右 Padding (让文字和照片有间距) */}
       <Box sx={styles.infoBox}>
-        {_.map(infoItems, (item: string, key: BasicsDataKeys) => {
-          const itemConfig: KVConfig = helpers.jsonParse(
-            data[`${key}Config` as BasicsDataKeysConfig],
-          );
-
-          return <InfoItem key={key} keyName={key} value={item} itemConfig={itemConfig} />;
+        {_.map(infoItems, (item) => {
+          return <InfoItem key={item.id} data={item} />;
         })}
       </Box>
     </Box>

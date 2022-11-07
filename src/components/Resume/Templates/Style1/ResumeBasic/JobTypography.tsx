@@ -1,29 +1,20 @@
-import React from 'react';
-import helpers from '@/components/Resume/helpers';
-
-// Components
+import type { ResumeBasicField } from '@/components/Resume/types';
 import Typography from '@mui/material/Typography';
 
-// Types
-import type { KVConfig } from '@/components/Resume/types';
-
 interface Props {
-  config: string;
-  children: React.ReactNode;
+  data: ResumeBasicField;
 }
 
-const JobTypography = ({ config, children }: Props) => {
-  const configObj: KVConfig = helpers.jsonParse(config);
-
+const JobTypography = ({ data }: Props) => {
   // 不显示时返回空
-  if (!configObj.visible) {
+  if (!data.visible) {
     return null;
   }
 
   return (
     <Typography>
-      {configObj.showLabel ? '求职目标：' : null}
-      {children}
+      {data.showLabel ? '求职目标：' : null}
+      {data.value}
     </Typography>
   );
 };

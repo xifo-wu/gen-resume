@@ -8,19 +8,14 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 // Types
-import type { ResumeConfig, ModuleBase } from '@/components/Resume/types';
+import type { ModuleBase } from '@/components/Resume/types';
 
 interface Props {
   selectedItem?: boolean;
-  config?: ResumeConfig;
   data: Partial<ModuleBase>;
 }
 
 const ModuleTitle = ({
-  config = {
-    themeColor: '',
-    themeBgTextColor: '',
-  },
   data,
   selectedItem,
 }: Props) => {
@@ -55,7 +50,7 @@ const ModuleTitle = ({
             sx={{
               fontSize: 20,
               fontWeight: 600,
-              color: config.themeColor || theme.palette.primary.main,
+              color: theme.palette.primary.main,
             }}
           >
             {label}

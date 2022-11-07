@@ -26,6 +26,8 @@ const buildModuleItems = (data: ResumeType, moduleOrder: string) => {
 // 名为样式 1 的简历模版
 const Style1 = (props: Style1Props) => {
   const { data } = props;
+  // TODO 使用模版里的默认演示
+  const themeColor = data.themeColor || 'rgb(32, 101, 209)';
   const { resumeBasic, config, moduleOrder } = data;
   const theme = useTheme();
   const moduleItems = buildModuleItems(data, moduleOrder);
@@ -45,7 +47,7 @@ const Style1 = (props: Style1Props) => {
       }}
     >
       <Box sx={{ flex: 1 }}>
-        <ResumeBasic data={resumeBasic} config={config} />
+        <ResumeBasic themeColor={themeColor} data={resumeBasic} config={config} />
 
         <Box sx={{ mt: 4 }}>
           {_.map(moduleItems, (item, key) => {
@@ -93,7 +95,7 @@ const Style1 = (props: Style1Props) => {
         </Box>
       </Box>
 
-      <Box sx={{ flex: '0 0 32px', width: '100%', background: theme.palette.primary.main }} />
+      <Box sx={{ flex: '0 0 32px', width: '100%', background: themeColor }} />
     </Box>
   );
 };

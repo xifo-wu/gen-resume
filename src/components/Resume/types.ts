@@ -1,11 +1,7 @@
-// 简历模版配置
-export interface ResumeConfig {
-  themeColor: string;
-  themeBgTextColor: string;
-}
-
-// 键值对配置
-export interface KVConfig {
+// 个人信息键值对配置
+export interface ResumeBasicField {
+  id: string | number;
+  value: string;
   visible?: boolean;
   showLabel?: boolean;
   label?: string;
@@ -24,22 +20,18 @@ export type BasicsDataKeys =
   | 'age'
   | 'avatar';
 
-export type BasicsDataKeysConfig = `${BasicsDataKeys}Config`;
-
 // 个人信息基础信息
-export type BasicsData = {
-  [key in BasicsDataKeys | BasicsDataKeysConfig]: string;
-};
+export type BasicsData = Record<BasicsDataKeys, ResumeBasicField>;
 
 // 简历
 export interface ResumeType {
   name: string;
   slug: string;
+  themeColor: string;
   layoutType: string;
   moduleOrder: string;
   resumeBasic: BasicsData;
   education: Education;
-  config: ResumeConfig;
   workExperience: WorkExperience;
   others: Other[];
   project: Project;

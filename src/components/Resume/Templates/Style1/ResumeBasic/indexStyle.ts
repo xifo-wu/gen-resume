@@ -3,9 +3,9 @@ import type { Theme } from '@mui/material';
 import type { ResumeConfig } from '../../../types';
 
 export default {
-  headerBox: (theme: Theme, config: ResumeConfig) => ({
-    color: _.get(config, 'themeBgTextColor') || theme.palette.primary.contrastText,
-    background: _.get(config, 'themeColor') || theme.palette.primary.main,
+  headerBox: (theme: Theme, themeColor: string) => ({
+    color: theme.palette.getContrastText(themeColor),
+    background: themeColor || theme.palette.primary.main,
     pt: 6,
     px: 4,
   }),
