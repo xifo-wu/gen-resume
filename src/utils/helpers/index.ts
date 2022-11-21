@@ -14,7 +14,7 @@ const isDate = (value: any) => {
     return true;
   }
 
-  return '时间存在错误有误';
+  return false;
 };
 
 /**
