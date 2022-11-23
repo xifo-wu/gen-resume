@@ -1,7 +1,7 @@
 import { Box, ButtonBase } from '@mui/material';
 import Image from 'next/image';
 import CheckIcon from '@mui/icons-material/Check';
-import resumeTemplateList from '@/constant/resumeTemplates';
+import { resumeTemplateList } from '@/components/Resume/templateMap';
 import styles from './styles';
 
 interface Props {

@@ -25,6 +25,7 @@ export type BasicsData = Record<BasicsDataKeys, ResumeBasicField>;
 
 // 简历
 export interface ResumeType {
+  id: number;
   name: string;
   slug: string;
   themeColor: string;
@@ -41,6 +42,7 @@ export type ModulesKey = 'education' | 'workExperience' | 'project' | 'others';
 
 export interface ModuleBase {
   id: string | number;
+  key?: string;
   visible: boolean;
   label: string;
   moduleTitleType: string;

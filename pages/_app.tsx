@@ -15,6 +15,7 @@ import { AnimatePresence } from 'framer-motion';
 import { CookiesProvider } from 'react-cookie';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
+import { RecoilRoot } from 'recoil';
 
 import 'dayjs/locale/zh-cn';
 
@@ -65,38 +66,40 @@ export default function MyApp(props: MyAppProps) {
     };
   }, []);
 
-  const locale = 'zh-cn'
+  const locale = 'zh-cn';
 
   return (
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
-        <CookiesProvider>
-          <ThemeProvider theme={theme}>
-            {loading ? (
-              <FullPageLoading loading={loading} />
-            ) : (
-              <>
-                <CssBaseline />
-                {getLayout(<Component {...pageProps} />)}
-                <ToastContainer
-                  position="top-right"
-                  autoClose={1000}
-                  hideProgressBar={false}
-                  newestOnTop={false}
-                  closeOnClick
-                  rtl={false}
-                  pauseOnFocusLoss
-                  draggable
-                  pauseOnHover
-                />
-              </>
-            )}
-          </ThemeProvider>
-        </CookiesProvider>
-      </LocalizationProvider>
+      <RecoilRoot>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
+          <CookiesProvider>
+            <ThemeProvider theme={theme}>
+              {loading ? (
+                <FullPageLoading loading={loading} />
+              ) : (
+                <>
+                  <CssBaseline />
+                  {getLayout(<Component {...pageProps} />)}
+                  <ToastContainer
+                    position="top-right"
+                    autoClose={1000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                  />
+                </>
+              )}
+            </ThemeProvider>
+          </CookiesProvider>
+        </LocalizationProvider>
+      </RecoilRoot>
     </CacheProvider>
   );
 }

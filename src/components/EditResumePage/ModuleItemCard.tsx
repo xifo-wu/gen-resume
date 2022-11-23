@@ -40,20 +40,21 @@ const ModuleItemCard = (props: ModuleItemCardProps) => {
 
   const Card = () => (
     <Box sx={styles.container}>
-      <Box sx={styles.editBox} onClick={handleEditClick}>
-        <EditOutlinedIcon sx={styles.editIcon} />
-      </Box>
-      <Box sx={styles.titleBox}>
+      {disableReorder ? (
+        <Box sx={styles.editBox} onClick={handleEditClick}>
+          <EditOutlinedIcon sx={styles.editIcon} />
+        </Box>
+      ) : (
+        <Box sx={styles.grabBox} onPointerDown={(e) => controls.start(e)}>
+          <DragIndicatorIcon sx={styles.grabIcon} />
+        </Box>
+      )}
+      <Box sx={styles.titleBox} onClick={handleEditClick}>
         <Typography sx={styles.enTitle}>{data.en}</Typography>
         <Typography variant="h5" sx={styles.title}>
           {data.name}
         </Typography>
       </Box>
-      {!disableReorder && (
-        <Box sx={styles.grabBox} onPointerDown={(e) => controls.start(e)}>
-          <DragIndicatorIcon sx={styles.grabIcon} />
-        </Box>
-      )}
     </Box>
   );
 

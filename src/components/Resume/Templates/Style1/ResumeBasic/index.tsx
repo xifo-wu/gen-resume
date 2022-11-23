@@ -22,6 +22,8 @@ interface ResumeBasicProps {
 
 const ResumeBasic = (props: ResumeBasicProps) => {
   const { data, themeColor } = props;
+
+  // 数据不存在时不渲染
   if (_.isEmpty(data)) return null;
 
   // 个人基础信息
@@ -34,26 +36,10 @@ const ResumeBasic = (props: ResumeBasicProps) => {
     'age',
   ]);
 
-  const infoItems = _.map(
-    infoItemsObj,
-    (item, key) => ({
-      key,
-      ...item,
-    })
-  );
-
-
-  console.log(infoItems, 'infoItems');
-
-  // const filteredInfoItems = _.filter((item) => item.visible).value();
-  // const infoItems = _.chain(data).pick([
-  //   'mobile',
-  //   'email',
-  //   'educationalQualifications',
-  //   'website',
-  //   'birthday',
-  //   'age',
-  // ]).
+  const infoItems = _.map(infoItemsObj, (item, key) => ({
+    key,
+    ...item,
+  })).filter((item) => item.id);
 
   return (
     <Box>

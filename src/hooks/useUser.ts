@@ -1,10 +1,12 @@
-import useApi from "./useApi";
+import useSWR from 'swr';
+import api from '@/utils/api';
 
 export default function useUser() {
-  const { data: user, ...rest } = useApi('/api/v1/users/current');
+  const { data, ...rest } = useSWR<{ data: any }>('/api/v1/users/current', api.get);
 
   return {
     ...rest,
-    user,
-  }
+    loading: !data?.data,
+    user: data?.data,
+  };
 }

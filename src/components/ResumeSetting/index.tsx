@@ -6,7 +6,7 @@ import { apiPut } from '@/api';
 import { toast } from 'react-toastify';
 import { Box, rgbToHex, Typography } from '@mui/material';
 import { SketchPicker } from 'react-color';
-import { resumeTemplateMap } from '@/constant/resumeTemplates';
+import { resumeTemplateMap } from '@/components/Resume/templateMap';;
 import resumePresetColors from '@/constant/resumePresetColors';
 import styles from './styles';
 

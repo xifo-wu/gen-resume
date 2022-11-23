@@ -1,36 +1,38 @@
-import { Box, lighten, Link, Typography, useTheme } from '@mui/material';
+import type { ResumeType } from '@/components/Resume/types';
+import type { ModuleTitles } from '@/components/Resume/Templates/moduleTitleMap';
+import { Box } from '@mui/material';
 import _ from 'lodash';
 import ResumeBasic from './ResumeBasic';
-
-// Types
-import type { ModulesKey, ResumeType } from '@/components/Resume/types';
-import type { ModuleTitles } from '@/components/Resume/Templates/moduleTitleMap';
-
-// Constant
+import ModuleToolbar from '../../components/ModuleToolbar';
 import contentMap from '@/components/Resume/ContentBox/contentMap';
 import moduleTitleMap from '@/components/Resume/Templates/moduleTitleMap';
-
-interface Style1Props {
-  data: ResumeType;
-}
-
-const buildModuleItems = (data: ResumeType, moduleOrder: string) => {
-  const moduleOrderArray = (moduleOrder.split(',') as (ModulesKey | 'resumeBasic')[]) || [];
-  const filteredModule = _.filter(moduleOrderArray, (item) => item !== 'resumeBasic');
-
-  return _.map(filteredModule, (item) => data[item]).filter(
-    (item) => !!item,
-  ) as ResumeType[ModulesKey][];
-};
+import { ResumeTemplateComponentProps, resumeTemplateMap } from '@/components/Resume/templateMap';
+import helpers from '../../helpers';
+import { useSetRecoilState } from 'recoil';
+import moduleManageTabState, {
+  ResumeManageTabKeys,
+} from '@/stateManagement/atom/moduleManageTabState';
 
 // 名为样式 1 的简历模版
-const Style1 = (props: Style1Props) => {
-  const { data } = props;
-  // TODO 使用模版里的默认演示
-  const themeColor = data.themeColor || 'rgb(32, 101, 209)';
-  const { resumeBasic, config, moduleOrder } = data;
-  const theme = useTheme();
-  const moduleItems = buildModuleItems(data, moduleOrder);
+const Style1 = (props: ResumeTemplateComponentProps) => {
+  const { data, onActionClick } = props;
+  const { resumeBasic, moduleOrder } = data;
+  // const
+  const setModuleManageTabState = useSetRecoilState(moduleManageTabState);
+
+  const themeColor = data.themeColor || resumeTemplateMap[data.layoutType]?.themeColor;
+  const moduleItems = helpers.buildModuleItems(data, moduleOrder);
+
+  const handleToolClick = (actionName: string, moduleName: string) => {
+    const moduleTabName = `${actionName}${moduleName.replace(/^\S/, (s) =>
+      s.toUpperCase(),
+    )}` as ResumeManageTabKeys;
+
+    setModuleManageTabState(moduleTabName);
+
+    console.log('actionName', actionName);
+    // onActionClick?.(data.id, actionName);
+  };
 
   return (
     <Box
@@ -47,7 +49,12 @@ const Style1 = (props: Style1Props) => {
       }}
     >
       <Box sx={{ flex: 1 }}>
-        <ResumeBasic themeColor={themeColor} data={resumeBasic} config={config} />
+        <ModuleToolbar
+          editOnly
+          onToolClick={(actionName) => handleToolClick(actionName, 'resumeBasic')}
+        >
+          <ResumeBasic themeColor={themeColor} data={resumeBasic} />
+        </ModuleToolbar>
 
         <Box sx={{ mt: 4 }}>
           {_.map(moduleItems, (item, key) => {
@@ -78,18 +85,20 @@ const Style1 = (props: Style1Props) => {
             const ContentComponent = contentMap[item.contentType].component;
 
             return (
-              <Box
-                key={`${item.contentType}-${item.id}`}
-                sx={{
-                  display: item.visible ? 'block' : 'none',
-                  my: 1,
-                }}
-              >
-                <ModuleTitle data={item} />
-                <Box sx={{ px: 3, my: 2 }}>
-                  <ContentComponent data={item} />
+              <ModuleToolbar key={`${item.contentType}-${item.id}`} onToolClick={(actionName) => handleToolClick(actionName, item.key || '')}>
+                <Box
+                  key={`${item.contentType}-${item.id}`}
+                  sx={{
+                    display: item.visible ? 'block' : 'none',
+                    my: 1,
+                  }}
+                >
+                  <ModuleTitle data={item} />
+                  <Box sx={{ px: 3, my: 2 }}>
+                    <ContentComponent data={item} />
+                  </Box>
                 </Box>
-              </Box>
+              </ModuleToolbar>
             );
           })}
         </Box>

@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import type { Theme } from '@mui/material';
-import type { ResumeConfig } from '../../../types';
 
 export default {
   headerBox: (theme: Theme, themeColor: string) => ({
