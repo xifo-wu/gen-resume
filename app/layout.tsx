@@ -1,16 +1,26 @@
 'use client';
 
 import clsx from 'clsx';
-import { useMedia } from 'react-use';
+import { ToastContainer } from 'react-toastify';
 
 import './globals.css';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const isDark = useMedia('(prefers-color-scheme: dark)');
-
   return (
-    <html lang="en" className={clsx({ dark: isDark })}>
-      <body>{children}</body>
+    <html lang="en" className={clsx({ dark: false })}>
+      <body className="font-mono">
+        {children}
+        <ToastContainer
+          position="top-right"
+          autoClose={1000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+      </body>
     </html>
   );
 }

@@ -29,7 +29,7 @@ import FullPageLoading from '@/components/FullPageLoading';
 import LeftSideBar from '@/components/EditResumePage/LeftSideBar';
 import RightSideBar from '@/components/EditResumePage/RightSideBar';
 import Image from 'next/image';
-import Header from '@/components/EditResumePage/Header';
+import Header from '@/src/components/EditResumePage/Header';
 
 import { Theme } from '@mui/material';
 import NavBar from '@/components/NavBar';
